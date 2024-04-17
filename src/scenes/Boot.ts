@@ -1,6 +1,7 @@
-import { Scene } from "phaser";
+import { fadeCameraToScene } from "../utils/cameras.utils";
+import { TenebrisScene } from "../classes/tenebrisScene";
 
-export class Boot extends Scene {
+export class Boot extends TenebrisScene {
   constructor() {
     super("Boot");
   }
@@ -13,6 +14,18 @@ export class Boot extends Scene {
   }
 
   create() {
-    this.scene.start("Preloader");
+    this.add.image(512, 384, "background");
+    this.input.once("pointerdown", () => {
+      fadeCameraToScene(
+        "TextScene",
+        this.cameras.main,
+        1000,
+        {
+          text: "Hello World",
+          timeOut: 3000,
+          nextScene: "Game",
+        },
+      );
+    });
   }
 }
