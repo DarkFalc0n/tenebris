@@ -1,0 +1,3 @@
+interface ISceneData {
+  fadeTime?: number;
+}
