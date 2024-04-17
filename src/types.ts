@@ -1,3 +1,3 @@
-interface ISceneData {
+export interface ISceneData {
   fadeTime?: number;
 }
