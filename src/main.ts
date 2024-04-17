@@ -10,6 +10,12 @@ const config: Types.Core.GameConfig = {
   width: 1024,
   height: 768,
   parent: "game-container",
+  render: {
+    pixelArt: true,
+  },
+  physics: {
+    default: "arcade",
+  },
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
