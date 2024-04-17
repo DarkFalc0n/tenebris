@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { TenebrisScene } from "../classes/tenebrisScene";
+import { ISceneData } from "@/types";
 
 interface ITextSceneData extends ISceneData {
   text: string;
