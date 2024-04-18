@@ -1,38 +1,39 @@
-import { fadeCameraToScene } from "../utils/cameras.utils";
-import { TenebrisScene } from "../classes/tenebrisScene";
-import { Player } from "../classes/player";
+import { fadeCameraToScene } from "@/utils/cameras";
+import { TenebrisScene } from "@/classes/tenebrisScene";
+import { Player } from "@/classes/player";
+import { CONSTANTS } from "@/constants";
+import { loadImages, loadSprites } from "@/utils/loader";
+import { PLAYER } from "@/constants/player";
 
 export class Boot extends TenebrisScene {
   player: Player;
 
   constructor() {
-    super("Boot");
+    super(CONSTANTS.SCENES.BOOT);
   }
 
   preload() {
-    this.load.setPath("assets");
+    this.load.setPath(CONSTANTS.ASSET_DIR);
 
-    this.load.image("background", "bg.png");
-    this.load.spritesheet("player", "sprites/player.png", {
-      frameWidth: 32,
-      frameHeight: 64,
-    });
+    loadImages(this);
+    loadSprites(this);
   }
 
   create() {
-    this.physics.world.gravity.y = 500;
-    this.add.image(512, 384, "background");
+    this.physics.world.gravity.y = CONSTANTS.CONFIG.GRAVITY;
+    this.add.image(512, 384, "BACKGROUND");
 
     this.player = new Player(this);
-    this.player.loadAnimations(2);
+    this.player.loadAnimations();
     this.player.loadActions();
 
+    // placeholder platform
     const platform = this.physics.add.staticGroup();
     platform
       .create(
         0,
         this.player.y + this.player.height,
-        "player",
+        PLAYER.NAME,
         4,
       )
       .refreshBody()
@@ -42,7 +43,7 @@ export class Boot extends TenebrisScene {
 
     this.input?.once("pointerdown", () => {
       fadeCameraToScene(
-        "TextScene",
+        CONSTANTS.SCENES.TEXT_SCENE,
         this.cameras.main,
         1000,
         {
