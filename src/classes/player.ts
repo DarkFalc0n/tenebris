@@ -104,8 +104,8 @@ export class Player
     this.scene.anims.create({
       key: PLAYER.ANIMATION.IDLE,
       frames: [
-        { key: "player", frame: 0 },
-        { key: "player", frame: 4 },
+        { key: PLAYER.NAME, frame: 0 },
+        { key: PLAYER.NAME, frame: 4 },
       ],
       frameRate,
       repeat: -1,
@@ -114,10 +114,10 @@ export class Player
     this.scene.anims.create({
       key: PLAYER.ANIMATION.WALK,
       frames: [
-        { key: "player", frame: 0 },
-        { key: "player", frame: 2 },
-        { key: "player", frame: 1 },
-        { key: "player", frame: 2 },
+        { key: PLAYER.NAME, frame: 0 },
+        { key: PLAYER.NAME, frame: 2 },
+        { key: PLAYER.NAME, frame: 1 },
+        { key: PLAYER.NAME, frame: 2 },
       ],
       frameRate,
       repeat: -1,
@@ -126,8 +126,8 @@ export class Player
     this.scene.anims.create({
       key: PLAYER.ANIMATION.JUMP,
       frames: [
-        { key: "player", frame: 1 },
-        { key: "player", frame: 0 },
+        { key: PLAYER.NAME, frame: 1 },
+        { key: PLAYER.NAME, frame: 0 },
       ],
       frameRate: frameRate * 1.5,
       repeat: 1,

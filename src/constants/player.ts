@@ -1,4 +1,5 @@
 import { Input } from "phaser";
+import { TSpriteFile } from "@/types";
 
 enum ANIMATION {
   IDLE = "idle",
@@ -28,9 +29,18 @@ const CONTROL: Record<keyof typeof ACTION, number> = {
   JUMP: Input.Keyboard.KeyCodes.SPACE,
 };
 
+const SPRITE: TSpriteFile = {
+  PATH: "player.png",
+  FRAME: {
+    frameWidth: 32,
+    frameHeight: 64,
+  },
+};
+
 export const PLAYER = {
-  NAME: "player",
+  NAME: "PLAYER",
   ANIMATION,
+  SPRITE,
   ACTION,
   CONFIG,
   CONTROL,

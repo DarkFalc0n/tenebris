@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
-import { TenebrisScene } from "../classes/tenebrisScene";
+import { TenebrisScene } from "@/classes/tenebrisScene";
 import { ISceneData } from "@/types";
+import { CONSTANTS } from "@/constants";
 
 interface ITextSceneData extends ISceneData {
   text: string;
@@ -14,7 +15,7 @@ export class TextScene extends TenebrisScene {
   //   private nextScene?: string | Scene;
 
   constructor() {
-    super("TextScene");
+    super(CONSTANTS.SCENES.TEXT_SCENE);
   }
 
   init(data: ITextSceneData) {
