@@ -1,5 +1,7 @@
 import { Types } from "phaser";
 
+export type ValueOf<T> = T[keyof T];
+
 export type TSpriteFile = {
   PATH: string;
   FRAME: Types.Loader.FileTypes.ImageFrameConfig;
