@@ -1,4 +1,4 @@
-import type { TenebrisScene } from "@/classes/tenebrisScene";
+import type { TenebrisScene } from "@/classes/TenebrisScene";
 import { CONSTANTS } from "@/constants";
 
 const getAbsolutePath = (...paths: string[]) =>

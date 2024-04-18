@@ -1,7 +1,7 @@
 import { Input, Physics } from "phaser";
 
-import { TenebrisScene } from "./tenebrisScene";
-import { ActionsManager } from "@/lib/actions";
+import { TenebrisScene } from "./TenebrisScene";
+import { ActionsManager } from "@/lib/Actions";
 import { PLAYER } from "@/constants/player";
 import { PlayerMethods } from "@/types";
 

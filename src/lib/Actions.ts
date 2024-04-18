@@ -1,15 +1,17 @@
+import { Action } from "@/types";
+
 export class ActionsManager {
   private defaultAction: string;
-  private actions: Map<string, Function>; // list of all available actions
+  private actions: Map<string, Action>; // list of all available actions
   private stack: string[]; // stores keys of sequentially executed actions
 
   constructor(defaultAction: string) {
-    this.actions = new Map<string, Function>();
+    this.actions = new Map<string, Action>();
     this.defaultAction = defaultAction;
     this.stack = [defaultAction];
   }
 
-  add(name: string, action: Function) {
+  add(name: string, action: Action) {
     this.actions.set(name, action);
   }
 

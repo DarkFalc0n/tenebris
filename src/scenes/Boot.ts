@@ -1,6 +1,6 @@
 import { fadeCameraToScene } from "@/utils/cameras";
-import { TenebrisScene } from "@/classes/tenebrisScene";
-import { Player } from "@/classes/player";
+import { TenebrisScene } from "@/classes/TenebrisScene";
+import { Player } from "@/classes/Player";
 import { CONSTANTS } from "@/constants";
 import { loadImages, loadSprites } from "@/utils/loader";
 import { PLAYER } from "@/constants/player";

@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { TenebrisScene } from "@/classes/tenebrisScene";
+import { TenebrisScene } from "@/classes/TenebrisScene";
 import { ISceneData } from "@/types";
 import { CONSTANTS } from "@/constants";
 
