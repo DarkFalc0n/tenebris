@@ -3,6 +3,7 @@
   "description": "Tenebris is a HTML5 game built with Phaser 3 and TypeScript. It is a 2D platformer game with a gloomy theme.",
   "version": "0.0.1",
   "main": "src/main.ts",
+  "packageManager": "^pnpm@8.15.4",
   "scripts": {
     "dev": "node esbuild/dev.server.mjs -w",
     "build": "node esbuild/build.prod.mjs",
