@@ -12,8 +12,6 @@ This template has been updated for:
 - [esbuild 0.20.1](https://github.com/evanw/esbuild)
 - [TypeScript 5.3.3](https://github.com/microsoft/TypeScript)
 
-![screenshot](screenshot.png)
-
 ## Requirements
 
 [Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
@@ -53,7 +51,7 @@ esbuild supports loading assets via JavaScript module `import` statements (not r
 This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
 
 ```js
-import logoImg from './logo.png';
+import logoImg from "./logo.png";
 ```
 
 To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
@@ -63,11 +61,11 @@ preload();
 {
   //  This is an example of an imported bundled image.
   //  Remember to import it at the top of this file
-  this.load.image('logo', logoImg);
+  this.load.image("logo", logoImg);
 
   //  This is an example of loading a static image
   //  from the public/assets folder:
-  this.load.image('background', 'assets/bg.png');
+  this.load.image("background", "assets/bg.png");
 }
 ```
 
