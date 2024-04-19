@@ -55,7 +55,16 @@ export class Player
 
   // actions
   loadActions() {
-    this.actions = new ActionsManager(PLAYER.ACTION.IDLE);
+    this.actions = new ActionsManager(2);
+    this.actions.blockThread(1);
+
+    this.actions.add(
+      PLAYER.ACTION.JUMP,
+      () => {
+        this.setVelocityY(-this.baseSpeed * 1.5);
+      },
+      1,
+    );
 
     this.actions.add(
       PLAYER.ACTION.IDLE,
@@ -63,6 +72,7 @@ export class Player
         this.setVelocityX(0);
       },
       0,
+      true,
     );
 
     this.actions.add(
@@ -71,7 +81,7 @@ export class Player
         this.flipX = true;
         this.setVelocityX(this.baseSpeed * speedBoost);
       },
-      1,
+      0,
     );
 
     this.actions.add(
@@ -80,15 +90,7 @@ export class Player
         this.flipX = false;
         this.setVelocityX(-this.baseSpeed * speedBoost);
       },
-      1,
-    );
-
-    this.actions.add(
-      PLAYER.ACTION.JUMP,
-      () => {
-        this.setVelocityY(-this.baseSpeed * 1.5);
-      },
-      2,
+      0,
     );
   }
 
@@ -97,6 +99,9 @@ export class Player
       if (this.hasJumped) return;
       this.actions.start(PLAYER.ACTION.JUMP);
     });
+    // even if this does not make sense, it is here for cleanup purposes
+    // same results can be achieved by passing true as 3rd param of start method
+    // but the end function must be called on some other condition
     this.control.JUMP.on("up", () => {
       this.actions.end(PLAYER.ACTION.JUMP);
     });

@@ -1,71 +1,90 @@
 import { Action } from "@/types";
+import { peek } from "@/utils";
+
+interface IThread<Key> {
+  isBlocking: boolean;
+  default?: Key;
+}
 
 export class ActionsManager<ActionKey extends number> {
-  private default: ActionKey | null; // default action
-  private actions: Map<ActionKey, Action>; // list of all available actions
-  private priority: Map<ActionKey, number>; // priority of each action
-  private stack: ActionKey[]; // stores keys of sequentially executed actions
+  private actions: Map<ActionKey, Action>;
+  private mtStack: ActionKey[][];
+  private location: Map<ActionKey, number>;
+  private threads: IThread<ActionKey>[];
 
-  constructor(defaultAction?: ActionKey) {
+  /**
+   *
+   * @param threads different threads you want your actions to run
+   */
+  constructor(threads: number) {
     this.actions = new Map<ActionKey, Action>();
-    this.priority = new Map<ActionKey, number>();
-    this.stack = [];
-    this.default = null;
-    if (defaultAction !== undefined) {
-      this.stack.push(defaultAction);
-      this.default = defaultAction;
-    }
+    this.mtStack = new Array<ActionKey[]>(threads).fill([]);
+    this.location = new Map<ActionKey, number>();
+    this.threads = new Array<IThread<ActionKey>>(threads);
   }
 
-  private insert(key: ActionKey) {
-    const index = this.stack.indexOf(key);
-    if (index !== -1) {
-      // if action already exists
-      if (
-        index === this.stack.length - 1 ||
-        this.priority.get(key)! <
-          this.priority.get(this.stack[index + 1])!
-      )
-        return; // and already at the top position for its priority, do nothing
-      this.stack.splice(index, 1); // else, remove the action first
-    }
-
-    this.stack.push(key); // add the action to the stack
-    // sort the stack based on priority
-    for (let i = this.stack.length - 1; i > 0; i--) {
-      // slowly get to your seat newbie
-      if (
-        this.priority.get(this.stack[i])! <
-        this.priority.get(this.stack[i - 1])!
-      ) {
-        // swapping (couldn't find an inbuilt function )
-        const temp = this.stack[i];
-        this.stack[i] = this.stack[i - 1];
-        this.stack[i - 1] = temp;
-      } else break;
-    }
+  /**
+   *
+   * @description make a thread blocking, a.k.a one action can be inserted at a time
+   * @param threadID ID of the thread to block
+   */
+  blockThread(threadID: number) {
+    this.threads[threadID] = {
+      ...this.threads[threadID],
+      isBlocking: true,
+    };
   }
+
   /**
    * @description add an action to the manager
    * @param key identifier for the action
    * @param action the logic for this action
-   * @param priority a number that determines the order of execution
+   * @param thread the thread ID this action should be running on
+   * @param setDefault set this action as the default action for the thread
    */
-  add(key: ActionKey, action: Action, priority: number) {
+  add(
+    key: ActionKey,
+    action: Action,
+    thread: number,
+    setDefault = false,
+  ) {
     this.actions.set(key, action);
-    this.priority.set(key, priority);
+    if (setDefault)
+      this.threads[thread] = {
+        ...this.threads[thread],
+        default: key,
+      };
+    else this.location.set(key, thread);
   }
 
   /**
    * @description trigger the action
    * @param key identifier for the action
+   * @param force forcefully restarts the action
    */
-  start(key: ActionKey) {
-    const isRepeating =
-      key === this.stack[this.stack.length - 1];
-    this.insert(key); // add to the stack
+  start(key: ActionKey, force = false) {
+    const thread = this.location.get(key)!;
 
-    if (!isRepeating) this.actions.get(key)!();
+    if (this.threads[thread]?.isBlocking === true) {
+      if (this.mtStack[thread].length === 0) {
+        this.mtStack[thread].push(key);
+        this.actions.get(key)!();
+      }
+      return;
+    }
+
+    const wasRunning =
+      this.mtStack[thread].length !== 0 &&
+      key === peek(this.mtStack[thread]);
+
+    if (!force && wasRunning) return;
+    this.actions.get(key)!();
+
+    if (wasRunning) return;
+    this.mtStack[thread] = this.mtStack[thread].filter(
+      (k) => k !== key,
+    );
+    this.mtStack[thread].push(key);
   }
 
   /**
@@ -73,16 +92,22 @@ export class ActionsManager<ActionKey extends number> {
    * @param key identifier for the action
    */
   end(key: ActionKey) {
-    // remove the action from the stack
-    this.stack = this.stack.filter((k) => k !== key);
-    if (this.stack.length === 0) {
-      if (this.default !== null)
-        this.stack.push(this.default); // if no action is left, start the default action
-      else return; // if no default action is set, do nothing
-    }
+    const thread = this.location.get(key)!;
+    const wasRunning =
+      this.mtStack[thread].length !== 0 &&
+      key === peek(this.mtStack[thread]);
 
-    // invoke the most recent action
-    const prev = this.stack[this.stack.length - 1];
-    this.actions.get(prev)!();
+    this.mtStack[thread] = this.mtStack[thread].filter(
+      (k) => k !== key,
+    );
+
+    if (!wasRunning) return;
+    if (this.mtStack[thread].length === 0) {
+      if (this.threads[thread].default !== undefined)
+        this.actions.get(this.threads[thread].default!)!();
+      return;
+    }
+    const recent = peek(this.mtStack[thread]);
+    this.actions.get(recent)!();
   }
 }
