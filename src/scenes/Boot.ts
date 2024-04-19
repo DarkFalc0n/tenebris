@@ -34,7 +34,8 @@ export class Boot extends TenebrisScene {
         0,
         this.player.y + this.player.height,
         PLAYER.NAME,
-        4,
+        0,
+        false,
       )
       .refreshBody()
       .setSize(2000, 1);
@@ -56,11 +57,11 @@ export class Boot extends TenebrisScene {
   }
 
   init() {
-    super.init({}) // Call the parent class's init method
+    super.init({}); // Call the parent class's init method
   }
 
   update() {
-    super.update() // Call the parent class's update method
+    super.update(); // Call the parent class's update method
     this.player.registerActions();
     this.player.playAnimations();
   }
