@@ -5,7 +5,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
   ],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  ignorePatterns: ["dist", "esbuild", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     sourceType: "module",
