@@ -60,11 +60,14 @@ export class ActionsManager<ActionKey extends number> {
   /**
    * @description trigger the action
    * @param key identifier for the action
-   * @param force forcefully restarts the action
    */
-  start(key: ActionKey, force = false) {
+  start(key: ActionKey) {
     const thread = this.location.get(key)!;
+    const wasRunning =
+      this.mtStack[thread].length !== 0 &&
+      key === peek(this.mtStack[thread]);
 
+    if (wasRunning) return;
     if (this.threads[thread]?.isBlocking === true) {
       if (this.mtStack[thread].length === 0) {
         this.mtStack[thread].push(key);
@@ -73,14 +76,7 @@ export class ActionsManager<ActionKey extends number> {
       return;
     }
 
-    const wasRunning =
-      this.mtStack[thread].length !== 0 &&
-      key === peek(this.mtStack[thread]);
-
-    if (!force && wasRunning) return;
     this.actions.get(key)!();
-
-    if (wasRunning) return;
     this.mtStack[thread] = this.mtStack[thread].filter(
       (k) => k !== key,
     );
@@ -97,13 +93,15 @@ export class ActionsManager<ActionKey extends number> {
       this.mtStack[thread].length !== 0 &&
       key === peek(this.mtStack[thread]);
 
+    // remove the action from stack
     this.mtStack[thread] = this.mtStack[thread].filter(
       (k) => k !== key,
     );
 
+    // start the next action if active action was removed
     if (!wasRunning) return;
     if (this.mtStack[thread].length === 0) {
-      if (this.threads[thread].default !== undefined)
+      if (this.threads[thread]?.default !== undefined)
         this.actions.get(this.threads[thread].default!)!();
       return;
     }
