@@ -146,8 +146,8 @@ export class Player
     const isMoving = this.body?.velocity.x !== 0;
 
     if (isJumping && !this.hasJumped) {
-      this.hasJumped = true;
       this.animations.play(PLAYER.ANIMATION.JUMP, false);
+      this.hasJumped = true;
     } else if (!isJumping && this.hasJumped) {
       this.hasJumped = false;
     }
