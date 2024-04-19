@@ -32,9 +32,9 @@ const CONTROL: Record<
 };
 
 const SPRITE: TSpriteFile = {
-  PATH: "player.png",
+  PATH: "char.png",
   FRAME: {
-    frameWidth: 32,
+    frameWidth: 48,
     frameHeight: 64,
   },
 };

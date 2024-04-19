@@ -78,7 +78,7 @@ export class Player
     this.actions.add(
       PLAYER.ACTION.FORWARD,
       (speedBoost = 1) => {
-        this.flipX = true;
+        this.flipX = false;
         this.setVelocityX(this.baseSpeed * speedBoost);
       },
       0,
@@ -87,7 +87,7 @@ export class Player
     this.actions.add(
       PLAYER.ACTION.BACKWARD,
       (speedBoost = 1) => {
-        this.flipX = false;
+        this.flipX = true;
         this.setVelocityX(-this.baseSpeed * speedBoost);
       },
       0,
@@ -131,10 +131,10 @@ export class Player
       { frameRate },
     );
 
-    this.animations.add(PLAYER.ANIMATION.IDLE, [0, 4]);
+    this.animations.add(PLAYER.ANIMATION.IDLE, [0, 1]);
     this.animations.add(
       PLAYER.ANIMATION.WALK,
-      [0, 2, 1, 2],
+      [0, 1, 1, 0],
     );
     this.animations.add(PLAYER.ANIMATION.JUMP, [1, 0], {
       repeat: 1,
