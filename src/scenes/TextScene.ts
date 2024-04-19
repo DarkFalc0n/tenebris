@@ -27,5 +27,7 @@ export class TextScene extends TenebrisScene {
       fontSize: "32px",
       color: "#fff",
     });
+
+    super.init({}) // Call the parent class's init method
   }
 }

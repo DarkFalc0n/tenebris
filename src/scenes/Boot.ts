@@ -55,7 +55,12 @@ export class Boot extends TenebrisScene {
     });
   }
 
+  init() {
+    super.init({}) // Call the parent class's init method
+  }
+
   update() {
+    super.update() // Call the parent class's update method
     this.player.registerActions();
     this.player.playAnimations();
   }
