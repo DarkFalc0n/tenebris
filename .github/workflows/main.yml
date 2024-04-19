@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+            cache: pnpm
+            node-version: 21
+            registry-url: https://registry.npmjs.org/
+      
+      - name: Setup pnpm
+      - uses: pnpm/action-setup@v2
+
+      - name: Install dependencies
+        shell: bash
+        run: pnpm i
+
+      - name: Build game
+        shell: bash
+        run: pnpm build
+
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: gh-pages
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
