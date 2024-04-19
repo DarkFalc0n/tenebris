@@ -4,7 +4,6 @@ import { Player } from "../classes/player";
 
 export class Boot extends TenebrisScene {
   player: Player;
-  fpsMonitor: Phaser.GameObjects.Text;
 
   constructor() {
     super("Boot");
@@ -53,16 +52,14 @@ export class Boot extends TenebrisScene {
         },
       );
     });
+  }
 
-    this.fpsMonitor = this.add.text(10, 10, "FPS: 0", {
-      fontSize: "16px",
-      color: "#fff",
-      backgroundColor: "#000",
-    }).setScrollFactor(0);
+  init() {
+    super.init({}) // Call the parent class's init method
   }
 
   update() {
-    this.fpsMonitor.setText("FPS: " + Math.floor(this.game.loop.actualFps));
+    super.update() // Call the parent class's update method
     this.player.registerActions();
     this.player.playAnimations();
   }
