@@ -1,30 +1,25 @@
-import { Input, Physics } from "phaser";
+import { Physics } from "phaser";
 
 import { TenebrisScene } from "./TenebrisScene";
 import { ActionsManager } from "@/lib/Actions";
+import { ControlManager } from "@/lib/Controls";
 import { AnimationManager } from "@/lib/Animations";
 import { PLAYER } from "@/constants/player";
 import { PlayerMethods, ValueOf } from "@/types";
-
-type Control = Record<
-  keyof typeof PLAYER.ACTION,
-  Input.Keyboard.Key
->;
 
 export class Player
   extends Physics.Arcade.Sprite
   implements PlayerMethods
 {
-  // TODO: manage these locks from ControlsManager
-  private lockJump: boolean;
-  private lockForward: boolean;
-  private lockBackward: boolean;
   private baseSpeed: number;
   private hasJumped: boolean;
+  private isInteracting: boolean;
 
-  private control: Control;
   private actions: ActionsManager<
     ValueOf<typeof PLAYER.ACTION>
+  >;
+  private controls: ControlManager<
+    ValueOf<typeof PLAYER.CONTROL>
   >;
   private animations: AnimationManager<
     ValueOf<typeof PLAYER.ANIMATION>
@@ -52,19 +47,19 @@ export class Player
 
     this.baseSpeed = baseSpeed;
     this.hasJumped = false;
-    this.lockJump = false;
-    this.lockForward = false;
-    this.lockBackward = false;
-    this.control = scene.input.keyboard!.addKeys(
-      PLAYER.CONTROL,
-    ) as Control;
+    this.controls = new ControlManager(
+      scene.input.keyboard!,
+    );
   }
 
   // actions
   loadActions() {
-    // TODO: find better way to pass these values, e.g: chaining
+    Object.keys(PLAYER.CONTROL).forEach((key) => {
+      if (isNaN(Number(key))) return;
+      this.controls.addKey(Number(key));
+    });
+
     this.actions = new ActionsManager(2);
-    // this.actions.blockThread(1);
 
     this.actions.add(
       PLAYER.ACTION.JUMP,
@@ -103,38 +98,32 @@ export class Player
   }
 
   registerActions() {
-    // TODO: fix ugly code
-    this.control.JUMP.on("down", () => {
-      if (this.lockJump || this.hasJumped) return;
-      this.lockJump = true;
+    this.controls.onPress(PLAYER.CONTROL.JUMP, () => {
+      if (this.hasJumped) return;
       this.actions.start(PLAYER.ACTION.JUMP);
     });
-    this.control.JUMP.on("up", () => {
-      if (!this.lockJump) return;
-      this.lockJump = false;
+    this.controls.onRelease(PLAYER.CONTROL.JUMP, () => {
       this.actions.end(PLAYER.ACTION.JUMP);
     });
 
-    this.control.FORWARD.on("down", () => {
-      if (this.lockForward) return;
-      this.lockForward = true;
+    this.controls.onPress(PLAYER.CONTROL.FORWARD, () => {
       this.actions.start(PLAYER.ACTION.FORWARD);
     });
-    this.control.FORWARD.on("up", () => {
-      if (!this.lockForward) return;
-      this.lockForward = false;
+    this.controls.onRelease(PLAYER.CONTROL.FORWARD, () => {
       this.actions.end(PLAYER.ACTION.FORWARD);
     });
 
-    this.control.BACKWARD.on("down", () => {
-      if (this.lockBackward) return;
-      this.lockBackward = true;
+    this.controls.onPress(PLAYER.CONTROL.BACKWARD, () => {
       this.actions.start(PLAYER.ACTION.BACKWARD);
     });
-    this.control.BACKWARD.on("up", () => {
-      if (!this.lockBackward) return;
-      this.lockBackward = false;
+    this.controls.onRelease(PLAYER.CONTROL.BACKWARD, () => {
       this.actions.end(PLAYER.ACTION.BACKWARD);
+    });
+    this.controls.onPress(PLAYER.CONTROL.INTERACT, () => {
+      this.isInteracting = true;
+    });
+    this.controls.onRelease(PLAYER.CONTROL.INTERACT, () => {
+      this.isInteracting = false;
     });
   }
 
@@ -156,6 +145,9 @@ export class Player
     this.animations.add(PLAYER.ANIMATION.JUMP, [1, 0], {
       repeat: 1,
     });
+    this.animations.add(PLAYER.ANIMATION.INTERACT, [1], {
+      repeat: 1,
+    });
   }
 
   playAnimations() {
@@ -171,6 +163,9 @@ export class Player
 
     if (!this.hasJumped && isMoving) {
       this.animations.play(PLAYER.ANIMATION.WALK);
+    }
+    if (this.isInteracting) {
+      this.animations.play(PLAYER.ANIMATION.INTERACT);
     }
     if (!isJumping && !isMoving) {
       this.animations.play(PLAYER.ANIMATION.IDLE);
