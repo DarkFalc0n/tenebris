@@ -2,7 +2,6 @@ import { Action } from "@/types";
 import { peek } from "@/utils";
 
 interface IThread<Key> {
-  isBlocking: boolean;
   default?: Key;
 }
 
@@ -21,18 +20,6 @@ export class ActionsManager<ActionKey extends number> {
     this.mtStack = new Array<ActionKey[]>(threads).fill([]);
     this.location = new Map<ActionKey, number>();
     this.threads = new Array<IThread<ActionKey>>(threads);
-  }
-
-  /**
-   *
-   * @description make a thread blocking, a.k.a one action can be inserted at a time
-   * @param threadID ID of the thread to block
-   */
-  blockThread(threadID: number) {
-    this.threads[threadID] = {
-      ...this.threads[threadID],
-      isBlocking: true,
-    };
   }
 
   /**
@@ -66,15 +53,7 @@ export class ActionsManager<ActionKey extends number> {
     const wasRunning =
       this.mtStack[thread].length !== 0 &&
       key === peek(this.mtStack[thread]);
-
     if (wasRunning) return;
-    if (this.threads[thread]?.isBlocking === true) {
-      if (this.mtStack[thread].length === 0) {
-        this.mtStack[thread].push(key);
-        this.actions.get(key)!();
-      }
-      return;
-    }
 
     this.actions.get(key)!();
     this.mtStack[thread] = this.mtStack[thread].filter(
