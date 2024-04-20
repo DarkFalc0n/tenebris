@@ -15,6 +15,10 @@ export class Player
   extends Physics.Arcade.Sprite
   implements PlayerMethods
 {
+  // TODO: manage these locks from ControlsManager
+  private lockJump: boolean;
+  private lockForward: boolean;
+  private lockBackward: boolean;
   private baseSpeed: number;
   private hasJumped: boolean;
 
@@ -48,6 +52,9 @@ export class Player
 
     this.baseSpeed = baseSpeed;
     this.hasJumped = false;
+    this.lockJump = false;
+    this.lockForward = false;
+    this.lockBackward = false;
     this.control = scene.input.keyboard!.addKeys(
       PLAYER.CONTROL,
     ) as Control;
@@ -55,8 +62,9 @@ export class Player
 
   // actions
   loadActions() {
+    // TODO: find better way to pass these values, e.g: chaining
     this.actions = new ActionsManager(2);
-    this.actions.blockThread(1);
+    // this.actions.blockThread(1);
 
     this.actions.add(
       PLAYER.ACTION.JUMP,
@@ -95,28 +103,37 @@ export class Player
   }
 
   registerActions() {
+    // TODO: fix ugly code
     this.control.JUMP.on("down", () => {
-      if (this.hasJumped) return;
+      if (this.lockJump || this.hasJumped) return;
+      this.lockJump = true;
       this.actions.start(PLAYER.ACTION.JUMP);
     });
-    // even if this does not make sense, it is here for cleanup purposes
-    // same results can be achieved by passing true as 3rd param of start method
-    // but the end function must be called on some other condition
     this.control.JUMP.on("up", () => {
+      if (!this.lockJump) return;
+      this.lockJump = false;
       this.actions.end(PLAYER.ACTION.JUMP);
     });
 
     this.control.FORWARD.on("down", () => {
+      if (this.lockForward) return;
+      this.lockForward = true;
       this.actions.start(PLAYER.ACTION.FORWARD);
     });
     this.control.FORWARD.on("up", () => {
+      if (!this.lockForward) return;
+      this.lockForward = false;
       this.actions.end(PLAYER.ACTION.FORWARD);
     });
 
     this.control.BACKWARD.on("down", () => {
+      if (this.lockBackward) return;
+      this.lockBackward = true;
       this.actions.start(PLAYER.ACTION.BACKWARD);
     });
     this.control.BACKWARD.on("up", () => {
+      if (!this.lockBackward) return;
+      this.lockBackward = false;
       this.actions.end(PLAYER.ACTION.BACKWARD);
     });
   }
@@ -131,11 +148,11 @@ export class Player
       { frameRate },
     );
 
-    this.animations.add(PLAYER.ANIMATION.IDLE, [0, 1]);
     this.animations.add(
-      PLAYER.ANIMATION.WALK,
+      PLAYER.ANIMATION.IDLE,
       [0, 1, 1, 0],
     );
+    this.animations.add(PLAYER.ANIMATION.WALK, [0, 1]);
     this.animations.add(PLAYER.ANIMATION.JUMP, [1, 0], {
       repeat: 1,
     });
