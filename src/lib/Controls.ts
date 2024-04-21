@@ -20,6 +20,14 @@ export class ControlManager<TKeys extends ValidKeyTypes> {
     this.locks.set(keyCode, false);
   }
 
+  onHold(keyCode: TKeys, callback: Action) {
+    const key = this.keys.get(keyCode)!;
+
+    if (key.isDown) {
+      callback();
+    }
+  }
+
   onPress(keyCode: TKeys, callback: Action) {
     const key = this.keys.get(keyCode)!;
 

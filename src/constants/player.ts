@@ -41,8 +41,8 @@ const SPRITE: TSpriteFile = {
 };
 
 const AUDIO: TAudioFile = {
-  json: "player-sfx.json",
-  src: "player-sfx.mp3",
+  json: "player-walking.json",
+  src: "player-walking.mp3",
 };
 
 export const PLAYER = {

@@ -19,7 +19,6 @@ export class Boot extends TenebrisScene {
   }
 
   create() {
-    this.physics.world.gravity.y = CONSTANTS.CONFIG.GRAVITY;
     this.add.image(512, 384, "BACKGROUND");
 
     this.player = new Player(this);
