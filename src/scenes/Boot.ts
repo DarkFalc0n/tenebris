@@ -2,7 +2,6 @@ import { fadeCameraToScene } from "@/utils/cameras";
 import { TenebrisScene } from "@/classes/TenebrisScene";
 import { Player } from "@/classes/Player";
 import { CONSTANTS } from "@/constants";
-import { loadImages, loadSprites } from "@/utils/loader";
 import { PLAYER } from "@/constants/player";
 
 export class Boot extends TenebrisScene {
@@ -14,9 +13,8 @@ export class Boot extends TenebrisScene {
 
   preload() {
     this.load.setPath(CONSTANTS.ASSET_DIR);
-
-    loadImages(this);
-    loadSprites(this);
+    this.loadImages(CONSTANTS.IMAGES);
+    this.loadSprites(CONSTANTS.SPRITES);
   }
 
   create() {
@@ -44,7 +42,7 @@ export class Boot extends TenebrisScene {
   }
 
   init() {
-    super.init({});
+    super.init();
   }
 
   update() {
