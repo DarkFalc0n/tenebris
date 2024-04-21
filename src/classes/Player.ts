@@ -69,7 +69,7 @@ export class Player
     this.actions.add(
       PLAYER.ACTION.JUMP,
       () => {
-        this.setVelocityY(-this.baseSpeed * 1.5);
+        this.setVelocityY(-this.baseSpeed * 2.37);
       },
       1,
     );
