@@ -29,7 +29,7 @@ const CONFIG = {
   SCALE: 2,
   SPEED: 100,
   FRAME_NUMBER: 0,
-  ANIMATION_FRAME_RATE: 2,
+  ANIMATION_FRAME_RATE: 4,
 };
 
 const SPRITE: TSpriteFile = {

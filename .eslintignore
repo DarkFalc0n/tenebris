@@ -1,0 +1,5 @@
+dist
+esbuild
+scripts
+.eslint*
+.prettier*

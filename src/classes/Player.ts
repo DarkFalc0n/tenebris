@@ -60,7 +60,7 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
       this.controls.addKey(Number(key));
     });
 
-    this.actions.add(1, PLAYER.ACTION.JUMP, (jumpBoost = 1.5) => {
+    this.actions.add(1, PLAYER.ACTION.JUMP, (jumpBoost = 2.37) => {
       this.setVelocityY(-this.baseSpeed * jumpBoost);
     });
 
@@ -116,7 +116,7 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
   loadAnimations() {
     this.animations.add(PLAYER.ANIMATION.IDLE, [0, 1, 1, 0]);
     this.animations.add(PLAYER.ANIMATION.WALK, [0, 1]);
-    this.animations.add(PLAYER.ANIMATION.JUMP, [1, 0], {
+    this.animations.add(PLAYER.ANIMATION.JUMP, [2, 3, 4, 1], {
       repeat: 1,
     });
     this.animations.add(PLAYER.ANIMATION.INTERACT, [1], {
