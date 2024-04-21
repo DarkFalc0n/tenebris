@@ -8,11 +8,14 @@ export class TenebrisScene extends Scene {
     this.fadeTime = data.fadeTime ?? 1000;
 
     // Create the fpsMonitor text object
-    this.fpsMonitor = this.add.text(10, 10, "FPS: 0", {
-      fontSize: "16px",
-      color: "#fff",
-      backgroundColor: "#000",
-    }).setScrollFactor(0).setDepth(1000);
+    this.fpsMonitor = this.add
+      .text(10, 10, "FPS: 0", {
+        fontSize: "16px",
+        color: "#fff",
+        backgroundColor: "#000",
+      })
+      .setScrollFactor(0)
+      .setDepth(1000);
   }
 
   create() {
@@ -21,8 +24,10 @@ export class TenebrisScene extends Scene {
 
   update() {
     // Check if the fpsMonitor exists, if it does, update the text
-    if(this.fpsMonitor) {
-        this.fpsMonitor.setText("FPS: " + Math.floor(this.game.loop.actualFps));
-      }
+    if (this.fpsMonitor) {
+      this.fpsMonitor.setText(
+        "FPS: " + Math.floor(this.game.loop.actualFps),
+      );
+    }
   }
 }

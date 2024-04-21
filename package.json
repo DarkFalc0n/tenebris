@@ -8,7 +8,17 @@
     "dev": "node esbuild/dev.server.mjs -w",
     "build": "node esbuild/build.prod.mjs",
     "format": "prettier --write \"**/*.{ts,js,cjs,mjs,json}\"",
-    "lint": "eslint . src --ext .ts"
+    "format:check": "prettier --check \"**/*.{ts,js,cjs,mjs,json}\"",
+    "format:staged": "prettier --write",
+    "lint": "eslint . src --ext .ts",
+    "lint:staged": "eslint",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "pnpm lint:staged",
+      "pnpm format:staged"
+    ]
   },
   "contributors": [
     "DarkFalc0n <pratyayroy20@gmail.com> (https://github.com/DarkFalc0n)",
@@ -32,6 +42,8 @@
     "esbuild-plugin-inline-image": "^0.0.9",
     "esbuild-serve": "^1.0.1",
     "eslint": "8.56.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3"
   }
