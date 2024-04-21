@@ -15,10 +15,10 @@ export class Boot extends TenebrisScene {
     this.load.setPath(CONSTANTS.ASSET_DIR);
     this.loadImages(CONSTANTS.IMAGES);
     this.loadSprites(CONSTANTS.SPRITES);
+    this.loadAudios(CONSTANTS.AUDIOS);
   }
 
   create() {
-    this.physics.world.gravity.y = CONSTANTS.CONFIG.GRAVITY;
     this.add.image(512, 384, "BACKGROUND");
 
     this.player = new Player(this);

@@ -1,5 +1,5 @@
 import { Input } from "phaser";
-import { TSpriteFile } from "@/types";
+import { TAudioFile, TSpriteFile } from "@/types";
 
 enum ANIMATION {
   IDLE = "idle",
@@ -33,18 +33,24 @@ const CONFIG = {
 };
 
 const SPRITE: TSpriteFile = {
-  PATH: "char.png",
-  FRAME: {
+  path: "char.png",
+  frame: {
     frameWidth: 48,
     frameHeight: 64,
   },
 };
 
+const AUDIO: TAudioFile = {
+  json: "player-walking.json",
+  src: "player-walking.mp3",
+};
+
 export const PLAYER = {
   NAME: "PLAYER",
+  CONFIG,
+  ACTION,
+  CONTROL,
   ANIMATION,
   SPRITE,
-  ACTION,
-  CONFIG,
-  CONTROL,
+  AUDIO,
 };
