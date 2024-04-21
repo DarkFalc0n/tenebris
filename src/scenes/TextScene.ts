@@ -28,6 +28,6 @@ export class TextScene extends TenebrisScene {
       color: "#fff",
     });
 
-    super.init({}); // Call the parent class's init method
+    super.init();
   }
 }

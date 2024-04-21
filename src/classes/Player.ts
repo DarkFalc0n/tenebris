@@ -1,17 +1,19 @@
-import { Physics } from "phaser";
+import { Physics, FX } from "phaser";
 
 import { TenebrisScene } from "./TenebrisScene";
 import { ActionsManager } from "@/lib/Actions";
 import { ControlManager } from "@/lib/Controls";
 import { AnimationManager } from "@/lib/Animations";
 import { PLAYER } from "@/constants/player";
-import { PlayerMethods, ValueOf } from "@/types";
+import { PlayerMethods, SFX, ValueOf } from "@/types";
 
 export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
   private baseSpeed: number;
   private hasJumped: boolean;
   private isInteracting: boolean;
 
+  private glow: FX.Glow;
+  private sfx: SFX;
   private actions: ActionsManager<ValueOf<typeof PLAYER.ACTION>>;
   private controls: ControlManager<ValueOf<typeof PLAYER.CONTROL>>;
   private animations: AnimationManager<ValueOf<typeof PLAYER.ANIMATION>>;
@@ -21,6 +23,7 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
     x: number = PLAYER.CONFIG.X,
     y: number = PLAYER.CONFIG.Y,
     baseSpeed: number = PLAYER.CONFIG.SPEED,
+    frameRate = PLAYER.CONFIG.ANIMATION_FRAME_RATE,
   ) {
     super(scene, x, y, PLAYER.NAME, PLAYER.CONFIG.FRAME_NUMBER);
 
@@ -32,7 +35,14 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
 
     this.baseSpeed = baseSpeed;
     this.hasJumped = false;
+    this.glow = this.postFX?.addGlow(0xffff, 0, 0);
+
+    this.sfx = scene.sound.addAudioSprite("PLAYER");
+    this.actions = new ActionsManager(2);
     this.controls = new ControlManager(scene.input.keyboard!);
+    this.animations = new AnimationManager(this, PLAYER.NAME, {
+      frameRate,
+    });
 
     this.loadActions();
     this.loadAnimations();
@@ -49,8 +59,6 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
       if (isNaN(Number(key))) return;
       this.controls.addKey(Number(key));
     });
-
-    this.actions = new ActionsManager(2);
 
     this.actions.add(1, PLAYER.ACTION.JUMP, (jumpBoost = 1.5) => {
       this.setVelocityY(-this.baseSpeed * jumpBoost);
@@ -94,17 +102,18 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
       this.actions.end(PLAYER.ACTION.BACKWARD);
     });
     this.controls.onPress(PLAYER.CONTROL.INTERACT, () => {
+      this.glow.outerStrength = 5;
+      this.sfx.play("recharging");
       this.isInteracting = true;
     });
     this.controls.onRelease(PLAYER.CONTROL.INTERACT, () => {
+      this.glow.outerStrength = 0;
       this.isInteracting = false;
     });
   }
 
   // animations
-  loadAnimations(frameRate = PLAYER.CONFIG.ANIMATION_FRAME_RATE) {
-    this.animations = new AnimationManager(this, PLAYER.NAME, { frameRate });
-
+  loadAnimations() {
     this.animations.add(PLAYER.ANIMATION.IDLE, [0, 1, 1, 0]);
     this.animations.add(PLAYER.ANIMATION.WALK, [0, 1]);
     this.animations.add(PLAYER.ANIMATION.JUMP, [1, 0], {

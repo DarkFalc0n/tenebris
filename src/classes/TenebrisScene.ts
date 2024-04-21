@@ -1,7 +1,8 @@
 import { Scene } from "phaser";
-import { getImgPath, getSpritePath } from "@/utils";
+import { getAudioPath, getImgPath, getSpritePath } from "@/utils";
+import { AudioConfig, ISceneData, ImageConfig, SpriteConfig } from "@/types";
 
-const defaultSceneData = {
+const defaultSceneData: ISceneData = {
   fadeTime: 1000,
   showFps: true,
 };
@@ -10,19 +11,25 @@ export class TenebrisScene extends Scene {
   private fadeTime: number;
   protected fpsMonitor: Phaser.GameObjects.Text | null;
 
-  protected loadImages(images: object) {
+  protected loadImages(images: ImageConfig) {
     for (const [name, path] of Object.entries(images)) {
       this.load.image(name, getImgPath(path));
     }
   }
 
-  protected loadSprites(sprites: object) {
-    for (const [name, sprite] of Object.entries(sprites)) {
-      this.load.spritesheet(name, getSpritePath(sprite.PATH), sprite.FRAME);
+  protected loadSprites(sprites: SpriteConfig) {
+    for (const [name, { path, frame }] of Object.entries(sprites)) {
+      this.load.spritesheet(name, getSpritePath(path), frame);
     }
   }
 
-  init(data?: typeof defaultSceneData) {
+  protected loadAudios(audios: AudioConfig) {
+    for (const [name, { json, src }] of Object.entries(audios)) {
+      this.load.audioSprite(name, getAudioPath(json)!, getAudioPath(src));
+    }
+  }
+
+  init(data?: ISceneData) {
     const { fadeTime, showFps } = { ...defaultSceneData, ...data };
     this.fadeTime = fadeTime ?? 1000;
 

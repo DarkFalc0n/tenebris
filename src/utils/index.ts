@@ -9,3 +9,6 @@ export const getImgPath = (name: string) =>
 
 export const getSpritePath = (name: string) =>
   getAbsolutePath(CONSTANTS.SPRITE_DIR, name);
+
+export const getAudioPath = (name: string | undefined) =>
+  name === undefined ? undefined : getAbsolutePath(CONSTANTS.AUDIO_DIR, name);

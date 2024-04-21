@@ -15,6 +15,7 @@ export class Boot extends TenebrisScene {
     this.load.setPath(CONSTANTS.ASSET_DIR);
     this.loadImages(CONSTANTS.IMAGES);
     this.loadSprites(CONSTANTS.SPRITES);
+    this.loadAudios(CONSTANTS.AUDIOS);
   }
 
   create() {
