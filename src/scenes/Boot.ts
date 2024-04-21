@@ -24,45 +24,31 @@ export class Boot extends TenebrisScene {
     this.add.image(512, 384, "BACKGROUND");
 
     this.player = new Player(this);
-    this.player.loadAnimations();
-    this.player.loadActions();
 
     // placeholder platform
     const platform = this.physics.add.staticGroup();
     platform
-      .create(
-        0,
-        this.player.y + this.player.height,
-        PLAYER.NAME,
-        0,
-        false,
-      )
+      .create(0, this.player.y + this.player.height, PLAYER.NAME, 0, false)
       .refreshBody()
       .setSize(2000, 1);
 
     this.physics.add.collider(this.player, platform);
 
     this.input?.once("pointerdown", () => {
-      fadeCameraToScene(
-        CONSTANTS.SCENES.TEXT_SCENE,
-        this.cameras.main,
-        1000,
-        {
-          text: "Hello World",
-          timeOut: 3000,
-          nextScene: "Game",
-        },
-      );
+      fadeCameraToScene(CONSTANTS.SCENES.TEXT_SCENE, this.cameras.main, 1000, {
+        text: "Hello World",
+        timeOut: 3000,
+        nextScene: "Game",
+      });
     });
   }
 
   init() {
-    super.init({}); // Call the parent class's init method
+    super.init({});
   }
 
   update() {
-    super.update(); // Call the parent class's update method
-    this.player.registerActions();
-    this.player.playAnimations();
+    super.update();
+    this.player.update();
   }
 }

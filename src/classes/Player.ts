@@ -7,23 +7,14 @@ import { AnimationManager } from "@/lib/Animations";
 import { PLAYER } from "@/constants/player";
 import { PlayerMethods, ValueOf } from "@/types";
 
-export class Player
-  extends Physics.Arcade.Sprite
-  implements PlayerMethods
-{
+export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
   private baseSpeed: number;
   private hasJumped: boolean;
   private isInteracting: boolean;
 
-  private actions: ActionsManager<
-    ValueOf<typeof PLAYER.ACTION>
-  >;
-  private controls: ControlManager<
-    ValueOf<typeof PLAYER.CONTROL>
-  >;
-  private animations: AnimationManager<
-    ValueOf<typeof PLAYER.ANIMATION>
-  >;
+  private actions: ActionsManager<ValueOf<typeof PLAYER.ACTION>>;
+  private controls: ControlManager<ValueOf<typeof PLAYER.CONTROL>>;
+  private animations: AnimationManager<ValueOf<typeof PLAYER.ANIMATION>>;
 
   constructor(
     scene: TenebrisScene,
@@ -31,13 +22,7 @@ export class Player
     y: number = PLAYER.CONFIG.Y,
     baseSpeed: number = PLAYER.CONFIG.SPEED,
   ) {
-    super(
-      scene,
-      x,
-      y,
-      PLAYER.NAME,
-      PLAYER.CONFIG.FRAME_NUMBER,
-    );
+    super(scene, x, y, PLAYER.NAME, PLAYER.CONFIG.FRAME_NUMBER);
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -47,9 +32,15 @@ export class Player
 
     this.baseSpeed = baseSpeed;
     this.hasJumped = false;
-    this.controls = new ControlManager(
-      scene.input.keyboard!,
-    );
+    this.controls = new ControlManager(scene.input.keyboard!);
+
+    this.loadActions();
+    this.loadAnimations();
+  }
+
+  update() {
+    this.registerActions();
+    this.playAnimations();
   }
 
   // actions
@@ -61,40 +52,23 @@ export class Player
 
     this.actions = new ActionsManager(2);
 
-    this.actions.add(
-      PLAYER.ACTION.JUMP,
-      () => {
-        this.setVelocityY(-this.baseSpeed * 1.5);
-      },
-      1,
-    );
+    this.actions.add(1, PLAYER.ACTION.JUMP, (jumpBoost = 1.5) => {
+      this.setVelocityY(-this.baseSpeed * jumpBoost);
+    });
 
-    this.actions.add(
-      PLAYER.ACTION.IDLE,
-      () => {
-        this.setVelocityX(0);
-      },
-      0,
-      true,
-    );
+    this.actions.setDefault(0, PLAYER.ACTION.STOP, () => {
+      this.setVelocityX(0);
+    });
 
-    this.actions.add(
-      PLAYER.ACTION.FORWARD,
-      (speedBoost = 1) => {
-        this.flipX = false;
-        this.setVelocityX(this.baseSpeed * speedBoost);
-      },
-      0,
-    );
+    this.actions.add(0, PLAYER.ACTION.FORWARD, (speedBoost = 1) => {
+      this.flipX = false;
+      this.setVelocityX(this.baseSpeed * speedBoost);
+    });
 
-    this.actions.add(
-      PLAYER.ACTION.BACKWARD,
-      (speedBoost = 1) => {
-        this.flipX = true;
-        this.setVelocityX(-this.baseSpeed * speedBoost);
-      },
-      0,
-    );
+    this.actions.add(0, PLAYER.ACTION.BACKWARD, (speedBoost = 1) => {
+      this.flipX = true;
+      this.setVelocityX(-this.baseSpeed * speedBoost);
+    });
   }
 
   registerActions() {
@@ -128,19 +102,10 @@ export class Player
   }
 
   // animations
-  loadAnimations(
-    frameRate = PLAYER.CONFIG.ANIMATION_FRAME_RATE,
-  ) {
-    this.animations = new AnimationManager(
-      this,
-      PLAYER.NAME,
-      { frameRate },
-    );
+  loadAnimations(frameRate = PLAYER.CONFIG.ANIMATION_FRAME_RATE) {
+    this.animations = new AnimationManager(this, PLAYER.NAME, { frameRate });
 
-    this.animations.add(
-      PLAYER.ANIMATION.IDLE,
-      [0, 1, 1, 0],
-    );
+    this.animations.add(PLAYER.ANIMATION.IDLE, [0, 1, 1, 0]);
     this.animations.add(PLAYER.ANIMATION.WALK, [0, 1]);
     this.animations.add(PLAYER.ANIMATION.JUMP, [1, 0], {
       repeat: 1,

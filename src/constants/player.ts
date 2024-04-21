@@ -9,7 +9,7 @@ enum ANIMATION {
 }
 
 enum ACTION {
-  IDLE,
+  STOP,
   FORWARD,
   BACKWARD,
   JUMP,
