@@ -1,9 +1,6 @@
 import { Types, Physics } from "phaser";
 
-type AnimationConfig = Omit<
-  Types.Animations.Animation,
-  "key" | "frames"
->;
+type AnimationConfig = Omit<Types.Animations.Animation, "key" | "frames">;
 
 export class AnimationManager<TAnimation extends string> {
   private sprite: string;
@@ -23,17 +20,10 @@ export class AnimationManager<TAnimation extends string> {
     };
   }
 
-  add(
-    key: TAnimation,
-    frames: number[],
-    config?: AnimationConfig,
-  ) {
+  add(key: TAnimation, frames: number[], config?: AnimationConfig) {
     this.object.anims.create({
       key,
-      frames: this.object.anims.generateFrameNumbers(
-        this.sprite,
-        { frames },
-      ),
+      frames: this.object.anims.generateFrameNumbers(this.sprite, { frames }),
       ...{
         ...this.baseConfig,
         ...config,

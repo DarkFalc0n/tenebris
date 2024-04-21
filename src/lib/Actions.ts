@@ -2,7 +2,6 @@ import { Action } from "@/types";
 import { peek } from "@/utils";
 
 interface IThread<Key> {
-  isBlocking: boolean;
   default?: Key;
 }
 
@@ -24,37 +23,23 @@ export class ActionsManager<ActionKey extends number> {
   }
 
   /**
-   *
-   * @description make a thread blocking, a.k.a one action can be inserted at a time
-   * @param threadID ID of the thread to block
-   */
-  blockThread(threadID: number) {
-    this.threads[threadID] = {
-      ...this.threads[threadID],
-      isBlocking: true,
-    };
-  }
-
-  /**
    * @description add an action to the manager
+   * @param thread the thread ID this action should be running on
    * @param key identifier for the action
    * @param action the logic for this action
-   * @param thread the thread ID this action should be running on
    * @param setDefault set this action as the default action for the thread
    */
-  add(
-    key: ActionKey,
-    action: Action,
-    thread: number,
-    setDefault = false,
-  ) {
+  add(thread: number, key: ActionKey, action: Action) {
     this.actions.set(key, action);
-    if (setDefault)
-      this.threads[thread] = {
-        ...this.threads[thread],
-        default: key,
-      };
-    else this.location.set(key, thread);
+    this.location.set(key, thread);
+  }
+
+  setDefault(thread: number, key: ActionKey, action: Action) {
+    this.actions.set(key, action);
+    this.threads[thread] = {
+      ...this.threads[thread],
+      default: key,
+    };
   }
 
   /**
@@ -64,22 +49,11 @@ export class ActionsManager<ActionKey extends number> {
   start(key: ActionKey) {
     const thread = this.location.get(key)!;
     const wasRunning =
-      this.mtStack[thread].length !== 0 &&
-      key === peek(this.mtStack[thread]);
-
+      this.mtStack[thread].length !== 0 && key === peek(this.mtStack[thread]);
     if (wasRunning) return;
-    if (this.threads[thread]?.isBlocking === true) {
-      if (this.mtStack[thread].length === 0) {
-        this.mtStack[thread].push(key);
-        this.actions.get(key)!();
-      }
-      return;
-    }
 
     this.actions.get(key)!();
-    this.mtStack[thread] = this.mtStack[thread].filter(
-      (k) => k !== key,
-    );
+    this.mtStack[thread] = this.mtStack[thread].filter((k) => k !== key);
     this.mtStack[thread].push(key);
   }
 
@@ -90,13 +64,10 @@ export class ActionsManager<ActionKey extends number> {
   end(key: ActionKey) {
     const thread = this.location.get(key)!;
     const wasRunning =
-      this.mtStack[thread].length !== 0 &&
-      key === peek(this.mtStack[thread]);
+      this.mtStack[thread].length !== 0 && key === peek(this.mtStack[thread]);
 
     // remove the action from stack
-    this.mtStack[thread] = this.mtStack[thread].filter(
-      (k) => k !== key,
-    );
+    this.mtStack[thread] = this.mtStack[thread].filter((k) => k !== key);
 
     // start the next action if active action was removed
     if (!wasRunning) return;
