@@ -5,13 +5,22 @@ enum ANIMATION {
   IDLE = "idle",
   WALK = "walk",
   JUMP = "jump",
+  INTERACT = "interact",
 }
 
 enum ACTION {
-  IDLE,
-  JUMP,
+  STOP,
   FORWARD,
   BACKWARD,
+  JUMP,
+  INTERACT,
+}
+
+enum CONTROL {
+  FORWARD = Input.Keyboard.KeyCodes.D,
+  BACKWARD = Input.Keyboard.KeyCodes.A,
+  INTERACT = Input.Keyboard.KeyCodes.F,
+  JUMP = Input.Keyboard.KeyCodes.SPACE,
 }
 
 const CONFIG = {
@@ -21,14 +30,6 @@ const CONFIG = {
   SPEED: 100,
   FRAME_NUMBER: 0,
   ANIMATION_FRAME_RATE: 2,
-};
-const CONTROL: Record<
-  Exclude<keyof typeof ACTION, "IDLE">,
-  number
-> = {
-  FORWARD: Input.Keyboard.KeyCodes.D,
-  BACKWARD: Input.Keyboard.KeyCodes.A,
-  JUMP: Input.Keyboard.KeyCodes.SPACE,
 };
 
 const SPRITE: TSpriteFile = {

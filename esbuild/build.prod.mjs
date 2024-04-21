@@ -7,9 +7,7 @@ let onBuild = {
   name: "log",
   setup(build) {
     build.onEnd(() => {
-      process.stdout.write(
-        `🚀 Tenebris bundled in /dist folder\n`,
-      );
+      process.stdout.write(`🚀 Tenebris bundled in /dist folder\n`);
     });
   },
 };
