@@ -1,5 +1,5 @@
 import { Input } from "phaser";
-import SFX from "../../public/assets/audios/player-sfx";
+import SFX from "../../public/assets/audio/player-sfx";
 import { TAudioSpriteFile, TSpriteFile } from "@/types";
 
 enum ANIMATION {

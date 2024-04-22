@@ -3,23 +3,31 @@ import { TenebrisScene } from "@/classes/TenebrisScene";
 import { Player } from "@/classes/Player";
 import { CONSTANTS } from "@/constants";
 import { PLAYER } from "@/constants/player";
+import { SFX } from "@/types";
 
 export class Boot extends TenebrisScene {
-  player: Player;
+  private player: Player;
+  private volume: number;
+  private bgm: SFX;
 
   constructor() {
     super(CONSTANTS.SCENES.BOOT);
+    this.volume = 0;
   }
 
   preload() {
     this.load.setPath(CONSTANTS.ASSET_DIR);
+
     this.loadImages(CONSTANTS.IMAGES);
+    this.loadAudio(CONSTANTS.BGM);
     this.loadSprites(CONSTANTS.SPRITES);
-    this.loadAudios(CONSTANTS.AUDIOS);
+    this.loadAudioSprites(CONSTANTS.AUDIO_SPRITES);
   }
 
   create() {
-    this.add.image(512, 384, "BACKGROUND");
+    this.add.image(512, 384, CONSTANTS.IMAGES.BACKGROUND);
+    this.bgm = this.sound.add(CONSTANTS.BGM.BGM_01, { loop: true, volume: 0 });
+    this.bgm.play();
 
     this.player = new Player(this);
 
@@ -46,6 +54,10 @@ export class Boot extends TenebrisScene {
   }
 
   update() {
+    this.volume = Math.min(this.volume + 0.1, 60);
+    if (this.bgm.volume < 0.6) {
+      this.bgm.setVolume(this.volume / 100);
+    }
     super.update();
     this.player.update();
   }
