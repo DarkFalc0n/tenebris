@@ -7,10 +7,16 @@ import { AnimationManager } from "@/lib/Animations";
 import { PLAYER } from "@/constants/player";
 import { PlayerMethods, SFX, ValueOf } from "@/types";
 
-const steps = ["step-1", "step-2", "step-3", "step-4"];
+const steps = [
+  PLAYER.SFX.STEP_1,
+  PLAYER.SFX.STEP_2,
+  PLAYER.SFX.STEP_3,
+  PLAYER.SFX.STEP_4,
+];
 
 export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
   private baseSpeed: number;
+  private walkingDelay: number;
   private timeWalking: number;
   private footstep: number;
   private hasJumped: boolean;
@@ -38,12 +44,13 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
     this.setCollideWorldBounds(true);
 
     this.baseSpeed = baseSpeed;
+    this.walkingDelay = baseSpeed * 0.45;
     this.timeWalking = 0;
     this.footstep = 0;
     this.hasJumped = false;
     this.glow = this.postFX?.addGlow(0xffff, 0, 0);
 
-    this.sfx = scene.sound.addAudioSprite("PLAYER");
+    this.sfx = scene.sound.addAudioSprite(PLAYER.NAME);
     this.actions = new ActionsManager(2);
     this.controls = new ControlManager(scene.input.keyboard!);
     this.animations = new AnimationManager(this, PLAYER.NAME, {
@@ -64,13 +71,12 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
   }
 
   walk() {
-    const delay = this.baseSpeed * 0.6;
     if (this.timeWalking === 0) {
       if (this.footstep >= 0) this.sfx.play(steps[this.footstep]);
       this.footstep++;
       this.footstep %= 4;
     }
-    this.timeWalking = (this.timeWalking + 1) % delay;
+    this.timeWalking = (this.timeWalking + 1) % this.walkingDelay;
   }
 
   // actions
@@ -123,6 +129,7 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
     });
     this.controls.onPress(PLAYER.CONTROL.INTERACT, () => {
       this.glow.outerStrength = 5;
+      this.sfx.play(PLAYER.SFX.BATTERY_CHARGED);
       this.isInteracting = true;
     });
     this.controls.onRelease(PLAYER.CONTROL.INTERACT, () => {
@@ -149,14 +156,14 @@ export class Player extends Physics.Arcade.Sprite implements PlayerMethods {
       this.animations.play(PLAYER.ANIMATION.JUMP, false);
     }
     if (isJumping && !this.hasJumped) {
-      if (!isMoving || this.timeWalking >= this.baseSpeed * 0.4) {
-        this.sfx.play("step-3");
+      if (!isMoving || this.timeWalking >= this.walkingDelay * 0.4) {
+        this.sfx.play(PLAYER.SFX.STEP_3);
       }
       this.animations.play(PLAYER.ANIMATION.JUMP, false);
       this.hasJumped = true;
     } else if (!isJumping && this.hasJumped) {
       this.hasJumped = false;
-      this.sfx.play("step-4");
+      this.sfx.play(PLAYER.SFX.STEP_4);
       this.timeWalking = 0;
       this.footstep = -1;
     }

@@ -1,5 +1,10 @@
-const path = process.argv[2];
-const getFileName = (path) => path.split("/").slice(-1)[0];
-const toJSON = (name) => name.split(".")[0].concat(".json");
-
-console.log(toJSON(getFileName(path)));
+const data = require("fs").readFileSync(process.argv[2], "utf8");
+const result = {};
+data
+  .split(/[\n\r]+/)
+  .filter((line) => !!line)
+  .map((line) => line.split("\t"))
+  .forEach(
+    ([start, end, name]) => (result[name] = { start, end, loop: false }),
+  );
+console.log(JSON.stringify({ spritemap: result }, null, "\t"));

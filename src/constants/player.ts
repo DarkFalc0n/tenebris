@@ -1,4 +1,5 @@
 import { Input } from "phaser";
+import SFX from "../../public/assets/audios/player-sfx";
 import { TAudioFile, TSpriteFile } from "@/types";
 
 enum ANIMATION {
@@ -41,8 +42,8 @@ const SPRITE: TSpriteFile = {
 };
 
 const AUDIO: TAudioFile = {
-  json: "player-walking.json",
-  src: "player-walking.mp3",
+  json: "player-sfx.json",
+  src: "player-sfx.mp3",
 };
 
 export const PLAYER = {
@@ -50,6 +51,7 @@ export const PLAYER = {
   CONFIG,
   ACTION,
   CONTROL,
+  SFX,
   ANIMATION,
   SPRITE,
   AUDIO,
