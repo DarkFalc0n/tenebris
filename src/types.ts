@@ -17,14 +17,10 @@ export type TSpriteFile = {
   frame: Types.Loader.FileTypes.ImageFrameConfig;
 };
 
-export type TAudioFile = {
+export type TAudioSpriteFile = {
   json: string;
   src: string;
 };
-
-export type ImageConfig = Record<string, string>;
-export type SpriteConfig = Record<string, TSpriteFile>;
-export type AudioConfig = Record<string, TAudioFile>;
 
 export type Action = (...params: never[]) => void;
 

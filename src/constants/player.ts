@@ -1,6 +1,6 @@
 import { Input } from "phaser";
 import SFX from "../../public/assets/audios/player-sfx";
-import { TAudioFile, TSpriteFile } from "@/types";
+import { TAudioSpriteFile, TSpriteFile } from "@/types";
 
 enum ANIMATION {
   IDLE = "idle",
@@ -41,7 +41,7 @@ const SPRITE: TSpriteFile = {
   },
 };
 
-const AUDIO: TAudioFile = {
+const AUDIO: TAudioSpriteFile = {
   json: "player-sfx.json",
   src: "player-sfx.mp3",
 };

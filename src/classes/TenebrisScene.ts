@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 import { getAudioPath, getImgPath, getSpritePath } from "@/utils";
-import { AudioConfig, ISceneData, ImageConfig, SpriteConfig } from "@/types";
+import { ISceneData, TAudioSpriteFile, TSpriteFile } from "@/types";
 
 const defaultSceneData: ISceneData = {
   fadeTime: 1000,
@@ -11,20 +11,26 @@ export class TenebrisScene extends Scene {
   private fadeTime: number;
   protected fpsMonitor: Phaser.GameObjects.Text | null;
 
-  protected loadImages(images: ImageConfig) {
-    for (const [name, path] of Object.entries(images)) {
-      this.load.image(name, getImgPath(path));
+  protected loadImages(images: Record<string, string>) {
+    for (const [, name] of Object.entries(images)) {
+      this.load.image(name, getImgPath(name));
     }
   }
 
-  protected loadSprites(sprites: SpriteConfig) {
+  protected loadSprites(sprites: Record<string, TSpriteFile>) {
     for (const [name, { path, frame }] of Object.entries(sprites)) {
       this.load.spritesheet(name, getSpritePath(path), frame);
     }
   }
 
-  protected loadAudios(audios: AudioConfig) {
-    for (const [name, { json, src }] of Object.entries(audios)) {
+  protected loadAudio(audio: Record<string, string>) {
+    for (const [, name] of Object.entries(audio)) {
+      this.load.audio(name, getAudioPath(name));
+    }
+  }
+
+  protected loadAudioSprites(audioSprites: Record<string, TAudioSpriteFile>) {
+    for (const [name, { json, src }] of Object.entries(audioSprites)) {
       this.load.audioSprite(name, getAudioPath(json)!, getAudioPath(src));
     }
   }
