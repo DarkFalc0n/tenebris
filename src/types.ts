@@ -13,11 +13,13 @@ export interface ISceneData {
 }
 
 export type TSpriteFile = {
+  name: string;
   path: string;
   frame: Types.Loader.FileTypes.ImageFrameConfig;
 };
 
 export type TAudioSpriteFile = {
+  name: string;
   json: string;
   src: string;
 };

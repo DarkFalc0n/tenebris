@@ -20,12 +20,12 @@ export class Boot extends TenebrisScene {
 
     this.loadImages(CONSTANTS.IMAGES);
     this.loadAudio(CONSTANTS.BGM);
-    this.loadSprites(CONSTANTS.SPRITES);
-    this.loadAudioSprites(CONSTANTS.AUDIO_SPRITES);
+    this.loadSprites(PLAYER.SPRITE);
+    this.loadAudioSprites(PLAYER.AUDIO);
   }
 
   create() {
-    this.add.image(512, 384, CONSTANTS.IMAGES.BACKGROUND);
+    // this.add.image(512, 384, CONSTANTS.IMAGES.BACKGROUND);
     this.bgm = this.sound.add(CONSTANTS.BGM.BGM_01, { loop: true, volume: 0 });
     this.bgm.play();
 
@@ -34,11 +34,17 @@ export class Boot extends TenebrisScene {
     // placeholder platform
     const platform = this.physics.add.staticGroup();
     platform
-      .create(0, this.player.y + this.player.height, PLAYER.NAME, 0, false)
+      .create(
+        0,
+        this.player.y + this.player.height,
+        PLAYER.SPRITE.BODY.name,
+        0,
+        false,
+      )
       .refreshBody()
       .setSize(2000, 1);
 
-    this.physics.add.collider(this.player, platform);
+    this.player.collide(platform);
 
     this.input?.once("pointerdown", () => {
       fadeCameraToScene(CONSTANTS.SCENES.TEXT_SCENE, this.cameras.main, 1000, {

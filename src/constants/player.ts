@@ -33,21 +33,35 @@ const CONFIG = {
   ANIMATION_FRAME_RATE: 4,
 };
 
-const SPRITE: TSpriteFile = {
-  path: "char.png",
-  frame: {
-    frameWidth: 48,
-    frameHeight: 64,
-  },
+const frame = {
+  frameWidth: 48,
+  frameHeight: 64,
 };
 
+const BODY: TSpriteFile = {
+  name: "body",
+  path: "player-body.png",
+  frame,
+};
+
+const ENERGY: TSpriteFile = {
+  name: "light",
+  path: "player-energy.png",
+  frame,
+};
+
+const SPRITE = {
+  BODY,
+  ENERGY,
+} as const;
+
 const AUDIO: TAudioSpriteFile = {
+  name: "player-sfx",
   json: "player-sfx.json",
   src: "player-sfx.mp3",
 };
 
 export const PLAYER = {
-  NAME: "PLAYER",
   CONFIG,
   ACTION,
   CONTROL,
