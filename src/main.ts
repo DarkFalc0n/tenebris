@@ -1,11 +1,11 @@
-import { Game, Types } from "phaser";
+import { AUTO, Game, Scale, Types } from "phaser";
 
 import { Boot } from "./scenes/Boot";
 import { TextScene } from "./scenes/TextScene";
 import { CONSTANTS } from "./constants";
 
 const config: Types.Core.GameConfig = {
-  type: Phaser.AUTO,
+  type: AUTO,
   width: 1024,
   height: 768,
   parent: "game-container",
@@ -15,13 +15,13 @@ const config: Types.Core.GameConfig = {
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { x: 0, y: CONSTANTS.CONFIG.GRAVITY },
+      gravity: CONSTANTS.CONFIG.GRAVITY,
       debug: false,
     },
   },
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    mode: Scale.FIT,
+    autoCenter: Scale.CENTER_BOTH,
   },
   scene: [Boot, TextScene],
 };

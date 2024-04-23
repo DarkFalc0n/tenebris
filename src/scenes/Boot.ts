@@ -3,34 +3,48 @@ import { TenebrisScene } from "@/classes/TenebrisScene";
 import { Player } from "@/classes/Player";
 import { CONSTANTS } from "@/constants";
 import { PLAYER } from "@/constants/player";
+import { SFX } from "@/types";
 
 export class Boot extends TenebrisScene {
-  player: Player;
+  private player: Player;
+  private volume: number;
+  private bgm: SFX;
 
   constructor() {
     super(CONSTANTS.SCENES.BOOT);
+    this.volume = 0;
   }
 
   preload() {
     this.load.setPath(CONSTANTS.ASSET_DIR);
+
     this.loadImages(CONSTANTS.IMAGES);
-    this.loadSprites(CONSTANTS.SPRITES);
-    this.loadAudios(CONSTANTS.AUDIOS);
+    this.loadAudio(CONSTANTS.BGM);
+    this.loadSprites(PLAYER.SPRITE);
+    this.loadAudioSprites(PLAYER.AUDIO);
   }
 
   create() {
-    this.add.image(512, 384, "BACKGROUND");
+    // this.add.image(512, 384, CONSTANTS.IMAGES.BACKGROUND);
+    this.bgm = this.sound.add(CONSTANTS.BGM.BGM_01, { loop: true, volume: 0 });
+    this.bgm.play();
 
     this.player = new Player(this);
 
     // placeholder platform
     const platform = this.physics.add.staticGroup();
     platform
-      .create(0, this.player.y + this.player.height, PLAYER.NAME, 0, false)
+      .create(
+        0,
+        this.player.y + this.player.height,
+        PLAYER.SPRITE.BODY.name,
+        0,
+        false,
+      )
       .refreshBody()
       .setSize(2000, 1);
 
-    this.physics.add.collider(this.player, platform);
+    this.player.collide(platform);
 
     this.input?.once("pointerdown", () => {
       fadeCameraToScene(CONSTANTS.SCENES.TEXT_SCENE, this.cameras.main, 1000, {
@@ -46,6 +60,10 @@ export class Boot extends TenebrisScene {
   }
 
   update() {
+    this.volume = Math.min(this.volume + 0.1, 60);
+    if (this.bgm.volume < 0.6) {
+      this.bgm.setVolume(this.volume / 100);
+    }
     super.update();
     this.player.update();
   }

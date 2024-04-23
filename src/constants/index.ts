@@ -1,34 +1,28 @@
-import { PLAYER } from "./player";
-
 enum SCENES {
   BOOT = "boot",
-  TEXT_SCENE = "textScene",
+  TEXT_SCENE = "text-scene",
 }
 
-const IMAGES = {
-  BACKGROUND: "bg.png",
-} as const;
+enum BGM {
+  BGM_01 = "bgm-01.mp3",
+  BGM_02 = "bgm-02.mp3",
+  BGM_03 = "bgm-03.mp3",
+}
 
-const SPRITES = {
-  PLAYER: PLAYER.SPRITE,
-} as const;
-
-const AUDIOS = {
-  PLAYER: PLAYER.AUDIO,
-} as const;
+enum IMAGES {
+  BACKGROUND = "bg.png",
+}
 
 const CONFIG = {
-  GRAVITY: 500,
-};
+  GRAVITY: { x: 0, y: 500 },
+} as const;
 
 export const CONSTANTS = {
   SCENES,
   IMAGES,
-  SPRITES,
-  AUDIOS,
+  BGM,
   CONFIG,
   ASSET_DIR: "assets",
   IMAGE_DIR: "images",
-  SPRITE_DIR: "sprites",
-  AUDIO_DIR: "audios",
+  AUDIO_DIR: "audio",
 };
