@@ -99,11 +99,6 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     this.controls.onRelease(PLAYER.CONTROL.BACKWARD, () => {
       this.actions.end(PLAYER.ACTION.BACKWARD);
     });
-    // this.controls.onPress(PLAYER.CONTROL.INTERACT, () => {
-    //   this.sfx?.play(PLAYER.SFX.BATTERY_CHARGED);
-    // });
-    // this.controls.onRelease(PLAYER.CONTROL.INTERACT, () => {
-    // });
   }
 
   loadAnimations() {
@@ -112,7 +107,6 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     this.animations.add(PLAYER.ANIMATION.JUMP, [2, 3, 4, 1], {
       repeat: 1,
     });
-    // this.animations.add(PLAYER.ANIMATION.INTERACT, [4, 2]);
   }
 
   playAnimations({ beforeJump, afterJump }: Partial<Record<string, Action>>) {
@@ -120,18 +114,12 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     const isMoving = this.body?.velocity.x !== 0;
 
     if (isJumping && !this.hasJumped) {
-      // if (!isMoving || this.timeWalking >= this.walkingDelay * 0.4) {
-      //   this.sfx?.play(PLAYER.SFX.STEP_3);
-      // }
       if (beforeJump) beforeJump();
       this.animations.play(PLAYER.ANIMATION.JUMP, false);
       this.hasJumped = true;
     } else if (!isJumping && this.hasJumped) {
       this.hasJumped = false;
       if (afterJump) afterJump();
-      // this.sfx?.play(PLAYER.SFX.STEP_4);
-      // this.timeWalking = 0;
-      // this.footstep = -1;
     }
 
     if (!this.hasJumped && isMoving) {
