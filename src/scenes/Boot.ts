@@ -7,12 +7,11 @@ import { SFX } from "@/types";
 
 export class Boot extends TenebrisScene {
   private player: Player;
-  private volume: number;
   private bgm: SFX;
+  private volume = 0;
 
   constructor() {
     super(CONSTANTS.SCENES.BOOT);
-    this.volume = 0;
   }
 
   preload() {
@@ -26,13 +25,18 @@ export class Boot extends TenebrisScene {
 
   create() {
     // this.add.image(512, 384, CONSTANTS.IMAGES.BACKGROUND);
+    this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_1, 0.1, -30);
+    this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_2, 0.4);
+    this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_3, 1, 30);
+
     this.bgm = this.sound.add(CONSTANTS.BGM.BGM_01, { loop: true, volume: 0 });
     this.bgm.play();
 
     this.player = new Player(this);
+    this.player.bindCamera(this.cameras.main);
 
     // placeholder platform
-    const platform = this.physics.add.staticGroup();
+    const platform = this.physics.add.staticGroup().setOrigin(0, 0);
     platform
       .create(
         0,
@@ -42,7 +46,7 @@ export class Boot extends TenebrisScene {
         false,
       )
       .refreshBody()
-      .setSize(2000, 1);
+      .setSize(4000, 1);
 
     this.player.collide(platform);
 
@@ -68,5 +72,6 @@ export class Boot extends TenebrisScene {
     }
     super.update();
     this.player.update();
+    this.moveImages();
   }
 }

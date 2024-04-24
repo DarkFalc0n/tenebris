@@ -45,11 +45,11 @@ export class PlayerBody extends PlayerBase {
     super.update({
       beforeJump: () => {
         if (!isMoving || this.timeWalking >= this.walkingDelay * 0.4) {
-          this.sfx?.play(PLAYER.SFX.STEP_3);
+          this.sfx.play(PLAYER.SFX.STEP_3);
         }
       },
       afterJump: () => {
-        this.sfx?.play(PLAYER.SFX.STEP_4);
+        this.sfx.play(PLAYER.SFX.STEP_4);
         this.resetWalkingProgress(-1);
       },
     });

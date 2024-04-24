@@ -11,6 +11,9 @@ enum BGM {
 
 enum IMAGES {
   BACKGROUND = "bg.png",
+  CITY_ROOF_1 = "cityroof0.png",
+  CITY_ROOF_2 = "cityroof1.png",
+  CITY_ROOF_3 = "cityroof2.png",
 }
 
 const CONFIG = {

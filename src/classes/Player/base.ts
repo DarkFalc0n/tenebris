@@ -34,7 +34,7 @@ export class PlayerBase extends Physics.Arcade.Sprite {
 
     this.scale = PLAYER.CONFIG.SCALE;
     this.baseSpeed = baseSpeed;
-    this.setCollideWorldBounds(true);
+    // this.setCollideWorldBounds(true);
 
     this.actions = new ActionsManager(2);
     this.controls = new ControlManager(scene.input.keyboard!);

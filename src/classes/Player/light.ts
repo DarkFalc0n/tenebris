@@ -1,4 +1,4 @@
-import { PlayerBase, type IConfig } from "./base";
+import { PlayerBase, IConfig } from "./base";
 import { TenebrisScene } from "../TenebrisScene";
 import { PLAYER } from "@/constants/player";
 
