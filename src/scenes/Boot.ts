@@ -53,6 +53,8 @@ export class Boot extends TenebrisScene {
         nextScene: "Game",
       });
     });
+
+    this.cameras.main.setBackgroundColor("#adbec7");
   }
 
   init() {
