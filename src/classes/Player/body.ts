@@ -66,6 +66,7 @@ export class PlayerBody extends PlayerBase {
     if (!isMoving) this.resetWalkingProgress(-1);
     if (isMoving && !isJumping) this.playWalkingSound();
 
+    if (!this.canMove) return;
     if (!isMoving && !isJumping) this.reduceEnergy(PLAYER.BATTERY.IDLE);
     if (isMoving) this.reduceEnergy(PLAYER.BATTERY.WALK);
     if (isJumping) this.reduceEnergy(PLAYER.BATTERY.JUMP);

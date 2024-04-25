@@ -28,11 +28,19 @@ export class Player {
     camera.startFollow(this.body, true, 0.6, 0, -350, 0);
   }
 
-  collide(...objects: Types.Physics.Arcade.ArcadeColliderType[]) {
-    for (const object of objects) {
-      this.physics.add.collider(this.body, object);
-      this.physics.add.collider(this.glow, object);
-    }
+  collide(object: Types.Physics.Arcade.ArcadeColliderType) {
+    this.physics.add.collider(this.body, object);
+    this.physics.add.collider(this.glow, object);
+  }
+
+  startMovement() {
+    this.body.startMovement();
+    this.glow.startMovement();
+  }
+
+  stopMovement() {
+    this.body.stopMovement();
+    this.glow.stopMovement();
   }
 
   changeColor(color: number) {
