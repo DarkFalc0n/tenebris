@@ -2,7 +2,7 @@ import { Cameras, Physics, Types } from "phaser";
 import { TenebrisScene } from "../TenebrisScene";
 import { PLAYER } from "@/constants/player";
 import { PlayerBody } from "./body";
-import { PlayerGlow } from "./glow";
+import { PlayerEnergy } from "./light";
 import { IConfig } from "./base";
 
 const defaultConfig: IConfig = {
@@ -13,43 +13,40 @@ const defaultConfig: IConfig = {
 };
 
 export class Player {
+  public x: number;
+  public y: number;
+  public height: number;
+  public width: number;
+
   private physics: Physics.Arcade.ArcadePhysics;
-  public body: PlayerBody;
-  private glow: PlayerGlow;
+  public body: Physics.Arcade.Sprite;
+  public energy: Physics.Arcade.Sprite;
 
   constructor(scene: TenebrisScene, newConfig?: Partial<IConfig>) {
     const config = { ...defaultConfig, ...newConfig };
     this.body = new PlayerBody(scene, config);
-    this.glow = new PlayerGlow(scene, config);
+    this.energy = new PlayerEnergy(scene, config);
     this.physics = scene.physics;
+
+    this.x = this.body.x;
+    this.y = this.body.y;
+    this.height = this.body.height;
+    this.width = this.body.width;
   }
 
   bindCamera(camera: Cameras.Scene2D.Camera) {
     camera.startFollow(this.body, true, 0.6, 0, -350, 0);
   }
 
-  collide(object: Types.Physics.Arcade.ArcadeColliderType) {
-    this.physics.add.collider(this.body, object);
-    this.physics.add.collider(this.glow, object);
-  }
-
-  startMovement() {
-    this.body.startMovement();
-    this.glow.startMovement();
-  }
-
-  stopMovement() {
-    this.body.stopMovement();
-    this.glow.stopMovement();
-  }
-
-  changeColor(color: number) {
-    this.glow.setColor(color);
+  collide(...objects: Types.Physics.Arcade.ArcadeColliderType[]) {
+    for (const object of objects) {
+      this.physics.add.collider(this.body, object);
+      this.physics.add.collider(this.energy, object);
+    }
   }
 
   update() {
     this.body.update();
-    this.glow.update();
-    if (this.body.energy > 0) this.glow.setOpacity(this.body.energy / 100);
+    this.energy.update();
   }
 }

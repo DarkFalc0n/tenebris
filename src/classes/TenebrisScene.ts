@@ -1,6 +1,6 @@
 import { GameObjects, Scene } from "phaser";
 import { getAudioPath, getImagePath } from "@/utils";
-import { Action, ISceneData, TAudioSpriteFile, TSpriteFile } from "@/types";
+import { ISceneData, TAudioSpriteFile, TSpriteFile } from "@/types";
 
 const defaultSceneData: ISceneData = {
   fadeTime: 1000,
@@ -73,32 +73,6 @@ export class TenebrisScene extends Scene {
         pos[(curr + 2) % 3].x = pos[(curr + 1) % 3].x + width;
         this.imageIndex[idx] = (curr + 1) % 3; // idx = idx + 1
       }
-    });
-  }
-
-  protected showSubtitle(
-    text: string,
-    callback: Action,
-    timeOut = 3000,
-    color: string = "#000",
-  ) {
-    const subtitle = this.add
-      .text(
-        (this.sys.game.config.width as number) / 2,
-        (this.sys.game.config.height as number) - 100,
-        text,
-        {
-          fontSize: "32px",
-          color,
-        },
-      )
-      .setOrigin(0.5, 0.5)
-      .setScrollFactor(0)
-      .setDepth(1000);
-
-    this.time.delayedCall(timeOut, () => {
-      subtitle.destroy();
-      callback();
     });
   }
 
