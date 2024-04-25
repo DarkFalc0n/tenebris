@@ -17,7 +17,6 @@ export interface IConfig {
 export class PlayerBase extends Physics.Arcade.Sprite {
   protected baseSpeed: number;
   private hasJumped = false;
-  public canMove = true;
 
   private actions: ActionsManager<ValueOf<typeof PLAYER.ACTION>>;
   private controls: ControlManager<ValueOf<typeof PLAYER.CONTROL>>;
@@ -46,15 +45,6 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     this.loadActions();
     this.loadAnimations();
     this.registerActions();
-  }
-
-  startMovement() {
-    this.canMove = true;
-  }
-
-  stopMovement() {
-    this.stopWalking();
-    this.canMove = false;
   }
 
   protected stopWalking() {
@@ -89,7 +79,7 @@ export class PlayerBase extends Physics.Arcade.Sprite {
 
   registerActions() {
     this.controls.onPress(PLAYER.CONTROL.JUMP, () => {
-      if (!this.canMove || this.hasJumped) return;
+      if (this.hasJumped) return;
       this.actions.start(PLAYER.ACTION.JUMP);
     });
     this.controls.onRelease(PLAYER.CONTROL.JUMP, () => {
@@ -97,7 +87,6 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     });
 
     this.controls.onPress(PLAYER.CONTROL.FORWARD, () => {
-      if (!this.canMove) return;
       this.actions.start(PLAYER.ACTION.FORWARD);
     });
     this.controls.onRelease(PLAYER.CONTROL.FORWARD, () => {
@@ -105,7 +94,6 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     });
 
     this.controls.onPress(PLAYER.CONTROL.BACKWARD, () => {
-      if (!this.canMove) return;
       this.actions.start(PLAYER.ACTION.BACKWARD);
     });
     this.controls.onRelease(PLAYER.CONTROL.BACKWARD, () => {
