@@ -1,4 +1,4 @@
-import { Scene } from "phaser";
+import { GameObjects, Scene } from "phaser";
 import { getAudioPath, getImagePath } from "@/utils";
 import { ISceneData, TAudioSpriteFile, TSpriteFile } from "@/types";
 
@@ -8,6 +8,8 @@ const defaultSceneData: ISceneData = {
 };
 
 export class TenebrisScene extends Scene {
+  private images: GameObjects.Image[][];
+  private imageIndex: number[];
   private fadeTime: number;
   protected fpsMonitor: Phaser.GameObjects.Text | null;
 
@@ -35,9 +37,50 @@ export class TenebrisScene extends Scene {
     }
   }
 
+  protected spanFullScreen(name: string, scrollFactor = 1, y = 0, x = 0) {
+    const curr = this.add
+      .image(x, y, name)
+      .setOrigin(0, 0)
+      .setScrollFactor(scrollFactor);
+    const prev = this.add
+      .image(x - (this.sys.game.config.width as number), y, name)
+      .setOrigin(0, 0)
+      .setScrollFactor(scrollFactor);
+    const next = this.add
+      .image(x + (this.sys.game.config.width as number), y, name)
+      .setOrigin(0, 0)
+      .setScrollFactor(scrollFactor);
+
+    this.imageIndex.push(1);
+    this.images.push([prev, curr, next]);
+  }
+
+  protected moveImages() {
+    const width = this.sys.game.config.width as number;
+    const left = this.cameras.main.scrollX + 62;
+    const right = left + width;
+    this.images.forEach((pos, idx) => {
+      const curr = this.imageIndex[idx];
+      const imageWidth = width / pos[curr].scrollFactorX;
+
+      if (left < pos[curr].x - imageWidth / 2) {
+        // next.x = prev.x - width;
+        pos[(curr + 1) % 3].x = pos[(curr + 2) % 3].x - width;
+        this.imageIndex[idx] = (curr + 2) % 3; // idx = idx - 1
+      }
+      if (right > pos[curr].x + imageWidth * 1.5) {
+        // prev.x = next.x + 2 * width;
+        pos[(curr + 2) % 3].x = pos[(curr + 1) % 3].x + width;
+        this.imageIndex[idx] = (curr + 1) % 3; // idx = idx + 1
+      }
+    });
+  }
+
   init(data?: ISceneData) {
     const { fadeTime, showFps } = { ...defaultSceneData, ...data };
     this.fadeTime = fadeTime ?? 1000;
+    this.images = [];
+    this.imageIndex = [];
 
     // Create the fpsMonitor text object
     this.fpsMonitor = showFps

@@ -1,4 +1,4 @@
-import { Physics, Types } from "phaser";
+import { Cameras, Physics, Types } from "phaser";
 import { TenebrisScene } from "../TenebrisScene";
 import { PLAYER } from "@/constants/player";
 import { PlayerBody } from "./body";
@@ -19,8 +19,8 @@ export class Player {
   public width: number;
 
   private physics: Physics.Arcade.ArcadePhysics;
-  private body: Physics.Arcade.Sprite;
-  private energy: Physics.Arcade.Sprite;
+  public body: Physics.Arcade.Sprite;
+  public energy: Physics.Arcade.Sprite;
 
   constructor(scene: TenebrisScene, newConfig?: Partial<IConfig>) {
     const config = { ...defaultConfig, ...newConfig };
@@ -32,6 +32,10 @@ export class Player {
     this.y = this.body.y;
     this.height = this.body.height;
     this.width = this.body.width;
+  }
+
+  bindCamera(camera: Cameras.Scene2D.Camera) {
+    camera.startFollow(this.body, true, 0.6, 0, -350, 0);
   }
 
   collide(...objects: Types.Physics.Arcade.ArcadeColliderType[]) {
