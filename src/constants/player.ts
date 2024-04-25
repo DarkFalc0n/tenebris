@@ -46,13 +46,13 @@ const frame = {
 
 const BODY: TSpriteFile = {
   name: "body",
-  path: "player-body.png",
+  path: "player-body",
   frame,
 };
 
 const GLOW: TSpriteFile = {
   name: "light",
-  path: "player-glow.png",
+  path: "player-glow",
   frame,
 };
 
