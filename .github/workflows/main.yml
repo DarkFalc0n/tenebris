@@ -32,8 +32,6 @@ jobs:
       - name: Build game
         shell: bash
         run: pnpm build
-        env:
-          ENVIRONMENT: ${{secrets.ENVIRONMENT}}
 
       - name: Deploy
         uses: s0/git-publish-subdir-action@develop

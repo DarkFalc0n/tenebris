@@ -16,7 +16,8 @@ const config: Types.Core.GameConfig = {
     default: "arcade",
     arcade: {
       gravity: CONSTANTS.CONFIG.GRAVITY,
-      debug: ENVIRONMENT === "development",
+      //@ts-expect-error - Property "isDev" is assigned at buildtime
+      debug: isDev,
     },
   },
   scale: {
