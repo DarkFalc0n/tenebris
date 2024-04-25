@@ -29,16 +29,6 @@ jobs:
         shell: bash
         run: pnpm i
 
-      - name: Pre-Build
-        shell: bash
-        run: 
-          if [ $ENVIRONMENT == "production" ]
-          then
-            echo "Building for production 🚀"
-          fi
-        env:
-          ENVIRONMENT: ${{secrets.ENVIRONMENT}}
-
       - name: Build game
         shell: bash
         run: pnpm build
