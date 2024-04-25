@@ -80,17 +80,21 @@ export class Boot extends TenebrisScene {
     super.update();
     this.player.update();
     this.moveImages();
-    if (Math.round(this.player.body.x) === 400) {
-      this.player.stopMovement();
-      this.showSubtitle(
-        "A torn city, a broken heart, a lost soul.",
-        () => {
-          this.showSubtitle("Press SPACE to jump", () => {
-            this.player.startMovement();
-          });
-        },
-        3000,
-      );
-    }
+    // if (Math.round(this.player.body.x) === 400) {
+    //   this.player.stopMovement();
+    //   this.showSubtitle(
+    //     "A torn city, a broken heart, a lost soul.",
+    //     () => {
+    //       this.showSubtitle(
+    //         "Press SPACE to jump",
+    //         () => {
+    //           this.player.startMovement();
+    //         },
+    //         1000,
+    //       );
+    //     },
+    //     3000,
+    //   );
+    // }
   }
 }
