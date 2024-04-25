@@ -83,16 +83,19 @@ export class TenebrisScene extends Scene {
     this.imageIndex = [];
 
     // Create the fpsMonitor text object
-    this.fpsMonitor = showFps
-      ? this.add
-          .text(10, 10, "FPS: 0", {
-            fontSize: "16px",
-            color: "#fff",
-            backgroundColor: "#000",
-          })
-          .setScrollFactor(0)
-          .setDepth(1000)
-      : null;
+    //@ts-expect-error - Property "isDev" is assigned at buildtime
+    if (isDev) {
+      this.fpsMonitor = showFps
+        ? this.add
+            .text(10, 10, "FPS: 0", {
+              fontSize: "16px",
+              color: "#fff",
+              backgroundColor: "#000",
+            })
+            .setScrollFactor(0)
+            .setDepth(1000)
+        : null;
+    }
   }
 
   create() {
