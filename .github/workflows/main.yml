@@ -29,6 +29,10 @@ jobs:
         shell: bash
         run: pnpm i
 
+      - name: Pre-Build
+        shell: bash
+        run: echo "Building for $ENVIRONMENT 🚀"
+
       - name: Build game
         shell: bash
         run: pnpm build

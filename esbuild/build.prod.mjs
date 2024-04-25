@@ -2,6 +2,8 @@ import { build } from "esbuild";
 import clean from "esbuild-plugin-clean";
 import copy from "esbuild-plugin-copy";
 import inlineImage from "esbuild-plugin-inline-image";
+import dotenv from "dotenv";
+dotenv.config();
 
 let onBuild = {
   name: "log",
@@ -20,6 +22,7 @@ const builder = async () => {
     sourcemap: false,
     target: ["chrome58", "firefox57", "safari11"],
     outfile: "./dist/bundle.min.js",
+    define: { ENVIRONMENT: JSON.stringify(process.env.ENVIRONMENT) },
     plugins: [
       clean({
         patterns: ["./dist/*", "./public/bundle.min.js"],

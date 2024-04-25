@@ -69,3 +69,5 @@ declare module "*.fs" {
   const src: string;
   export default src;
 }
+
+declare const ENVIRONMENT: "production" | "development";
