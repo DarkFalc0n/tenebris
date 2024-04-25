@@ -31,7 +31,11 @@ jobs:
 
       - name: Pre-Build
         shell: bash
-        run: echo "Building for $ENVIRONMENT 🚀"
+        run: 
+          if [ $ENVIRONMENT == "production" ]
+          then
+            echo "Building for production 🚀"
+          fi
         env:
           ENVIRONMENT: ${{secrets.ENVIRONMENT}}
 
