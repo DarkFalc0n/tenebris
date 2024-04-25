@@ -24,12 +24,6 @@ enum CONTROL {
   JUMP = Input.Keyboard.KeyCodes.SPACE,
 }
 
-enum BATTERY {
-  IDLE = 0.005,
-  WALK = 0.04,
-  JUMP = 0.1,
-}
-
 const CONFIG = {
   X: 100,
   Y: 450,
@@ -50,15 +44,15 @@ const BODY: TSpriteFile = {
   frame,
 };
 
-const GLOW: TSpriteFile = {
+const ENERGY: TSpriteFile = {
   name: "light",
-  path: "player-glow.png",
+  path: "player-energy.png",
   frame,
 };
 
 const SPRITE = {
   BODY,
-  GLOW,
+  ENERGY,
 } as const;
 
 const AUDIO: TAudioSpriteFile = {
@@ -75,5 +69,4 @@ export const PLAYER = {
   ANIMATION,
   SPRITE,
   AUDIO,
-  BATTERY,
 };
