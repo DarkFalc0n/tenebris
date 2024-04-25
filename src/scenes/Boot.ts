@@ -1,4 +1,4 @@
-import { fadeCameraToScene } from "@/utils/cameras";
+// import { fadeCameraToScene } from "@/utils/cameras";
 import { TenebrisScene } from "@/classes/TenebrisScene";
 import { Player } from "@/classes/Player";
 import { CONSTANTS } from "@/constants";
@@ -40,7 +40,7 @@ export class Boot extends TenebrisScene {
     platform
       .create(
         0,
-        this.player.y + this.player.height,
+        this.player.body.y + this.player.body.height,
         PLAYER.SPRITE.BODY.name,
         0,
         false,
@@ -50,13 +50,13 @@ export class Boot extends TenebrisScene {
 
     this.player.collide(platform);
 
-    this.input?.once("pointerdown", () => {
-      fadeCameraToScene(CONSTANTS.SCENES.TEXT_SCENE, this.cameras.main, 1000, {
-        text: "Hello World",
-        timeOut: 3000,
-        nextScene: "Game",
-      });
-    });
+    // this.input?.once("pointerdown", () => {
+    //   fadeCameraToScene(CONSTANTS.SCENES.TEXT_SCENE, this.cameras.main, 1000, {
+    //     text: "Hello World",
+    //     timeOut: 3000,
+    //     nextScene: "Game",
+    //   });
+    // });
 
     this.cameras.main.setBackgroundColor("#adbec7");
   }
@@ -73,5 +73,17 @@ export class Boot extends TenebrisScene {
     super.update();
     this.player.update();
     this.moveImages();
+    if (Math.round(this.player.body.x) === 400) {
+      this.player.stopMovement();
+      this.showSubtitle(
+        "A torn city, a broken heart, a lost soul.",
+        () => {
+          this.showSubtitle("Press SPACE to jump", () => {
+            this.player.startMovement();
+          });
+        },
+        3000,
+      );
+    }
   }
 }
