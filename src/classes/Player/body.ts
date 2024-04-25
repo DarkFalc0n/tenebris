@@ -11,6 +11,7 @@ const steps = [
 ];
 
 export class PlayerBody extends PlayerBase {
+  public energy = 100;
   private timeWalking = 0;
   private footsteps = 0;
   private walkingDelay: number;
@@ -38,6 +39,14 @@ export class PlayerBody extends PlayerBase {
     this.timeWalking = (this.timeWalking + 1) % this.walkingDelay;
   }
 
+  private reduceEnergy(unit: number) {
+    this.energy = Math.max(0, this.energy - unit);
+  }
+
+  refillEnergy() {
+    this.energy = 100;
+  }
+
   update() {
     const isMoving = this.body?.velocity.x !== 0;
     const isJumping = this.body?.velocity.y !== 0;
@@ -54,7 +63,12 @@ export class PlayerBody extends PlayerBase {
       },
     });
 
-    if (!isMoving) this.resetWalkingProgress(0);
+    if (!isMoving) this.resetWalkingProgress(-1);
     if (isMoving && !isJumping) this.playWalkingSound();
+
+    if (!this.canMove) return;
+    if (!isMoving && !isJumping) this.reduceEnergy(PLAYER.BATTERY.IDLE);
+    if (isMoving) this.reduceEnergy(PLAYER.BATTERY.WALK);
+    if (isJumping) this.reduceEnergy(PLAYER.BATTERY.JUMP);
   }
 }
