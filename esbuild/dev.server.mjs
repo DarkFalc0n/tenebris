@@ -9,7 +9,7 @@ esbuildServe(
     minify: true,
     outfile: "public/bundle.min.js",
     plugins: [inlineImage()],
-    define: { isDev: true },
+    define: { isDev: "true" },
   },
   { root: "public", port: 8080 },
 );

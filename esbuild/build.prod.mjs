@@ -20,7 +20,7 @@ const builder = async () => {
     sourcemap: false,
     target: ["chrome58", "firefox57", "safari11"],
     outfile: "./dist/bundle.min.js",
-    define: { isDev: false },
+    define: { isDev: "false" },
     plugins: [
       clean({
         patterns: ["./dist/*", "./public/bundle.min.js"],
