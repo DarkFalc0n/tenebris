@@ -59,18 +59,18 @@ export class TenebrisScene extends Scene {
     const width = this.sys.game.config.width as number;
     const left = this.cameras.main.scrollX + 62;
     const right = left + width;
-
     this.images.forEach((pos, idx) => {
       const curr = this.imageIndex[idx];
+      const imageWidth = width / pos[curr].scrollFactorX;
 
-      if (left < pos[curr].x - width / 2) {
+      if (left < pos[curr].x - imageWidth / 2) {
         // next.x = prev.x - width;
         pos[(curr + 1) % 3].x = pos[(curr + 2) % 3].x - width;
         this.imageIndex[idx] = (curr + 2) % 3; // idx = idx - 1
       }
-      if (right > pos[curr].x + width * 1.5) {
+      if (right > pos[curr].x + imageWidth * 1.5) {
         // prev.x = next.x + 2 * width;
-        pos[(curr + 2) % 3].x = pos[(curr + 1) % 3].x + 1 * width;
+        pos[(curr + 2) % 3].x = pos[(curr + 1) % 3].x + width;
         this.imageIndex[idx] = (curr + 1) % 3; // idx = idx + 1
       }
     });
