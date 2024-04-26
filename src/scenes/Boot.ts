@@ -30,6 +30,7 @@ export class Boot extends TenebrisScene {
     // this.add.image(512, 384, CONSTANTS.IMAGES.BACKGROUND);
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_1, 0.1, -30);
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_2, 0.4);
+    this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_3, 0.8, 30);
 
     // this.add.image(0, 300, CONSTANTS.IMAGES.TILES);
     const map = this.make.tilemap({ key: "map" });
@@ -52,7 +53,6 @@ export class Boot extends TenebrisScene {
     this.player.collide(platform!);
 
     this.cameras.main.setBackgroundColor("#adbec7");
-    this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_3, 1, 30);
 
     //particle emitter
     this.add.particles(0, 0, "particle", {
@@ -70,7 +70,7 @@ export class Boot extends TenebrisScene {
       scale: { random: [1.5, 2] },
       alpha: { random: [0.1, 0.7] },
       gravityY: 10,
-      frequency: 50,
+      frequency: 30,
       blendMode: "MULTIPLY",
       follow: this.player.body,
       followOffset: { x: 0, y: -512 },
