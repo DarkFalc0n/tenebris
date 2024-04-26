@@ -33,6 +33,9 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
+    if (this.body instanceof Physics.Arcade.Body)
+      this.body.setSize(PLAYER.CONFIG.HITBOXWIDTH, PLAYER.CONFIG.HITBOXHEIGHT);
+
     this.scale = PLAYER.CONFIG.SCALE;
     this.baseSpeed = baseSpeed;
     // this.setCollideWorldBounds(true);

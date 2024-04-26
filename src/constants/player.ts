@@ -37,6 +37,8 @@ const CONFIG = {
   SPEED: 100,
   FRAME_NUMBER: 0,
   ANIMATION_FRAME_RATE: 4,
+  HITBOXWIDTH: 20,
+  HITBOXHEIGHT: 64,
 };
 
 const frame = {
