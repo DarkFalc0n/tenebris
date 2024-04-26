@@ -70,5 +70,13 @@ export class PlayerBody extends PlayerBase {
     if (!isMoving && !isJumping) this.reduceEnergy(PLAYER.BATTERY.IDLE);
     if (isMoving) this.reduceEnergy(PLAYER.BATTERY.WALK);
     if (isJumping) this.reduceEnergy(PLAYER.BATTERY.JUMP);
+
+    if (Math.round(this.energy) === 25) {
+      this.sfx.play(PLAYER.SFX.BATTERY_LOW);
+    }
+    // if (Math.round(this.energy) === 1) {
+    //   this.stopMovement();
+    //   this.sfx.play(PLAYER.SFX.RESPAWN);
+    // }
   }
 }

@@ -71,7 +71,7 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     this.setVelocityX(-this.baseSpeed * speedBoost);
   }
 
-  protected jump(jumpBoost = 2.37) {
+  protected jump(jumpBoost = 3) {
     this.setVelocityY(-this.baseSpeed * jumpBoost);
   }
 
@@ -117,7 +117,7 @@ export class PlayerBase extends Physics.Arcade.Sprite {
     this.animations.add(PLAYER.ANIMATION.IDLE, [0, 1, 1, 0]);
     this.animations.add(PLAYER.ANIMATION.WALK, [5, 6, 7, 8]);
     this.animations.add(PLAYER.ANIMATION.JUMP, [2, 3, 4, 1], {
-      repeat: 1,
+      repeat: 0,
     });
   }
 
