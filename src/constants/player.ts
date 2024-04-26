@@ -31,7 +31,7 @@ enum BATTERY {
 }
 
 const CONFIG = {
-  X: 100,
+  X: 500,
   Y: 450,
   SCALE: 2,
   SPEED: 100,

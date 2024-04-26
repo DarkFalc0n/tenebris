@@ -31,10 +31,16 @@ export class Boot extends TenebrisScene {
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_3, 1, 30);
 
     // this.add.image(0, 300, CONSTANTS.IMAGES.TILES);
-    // const map = this.make.tilemap({ key: "map" });
-    // const tileset = map.addTilesetImage("tiles", CONSTANTS.IMAGES.TILES);
+    const map = this.make.tilemap({ key: "map" });
+    const tileset = map.addTilesetImage(
+      "assetspritesheet",
+      CONSTANTS.IMAGES.TILES,
+    );
 
-    // map.createLayer("Background", tileset!);
+    map.createLayer("Background", tileset!)?.setScale(2.2);
+    map.createLayer("BackgroundDecor", tileset!)?.setScale(2.2);
+    map.createLayer("BackgroundDecor2", tileset!)?.setScale(2.2);
+    const platform = map.createLayer("Platform", tileset!)?.setScale(2.2);
 
     this.bgm = this.sound.add(CONSTANTS.BGM.BGM_01, { loop: true, volume: 0 });
     this.bgm.play();
@@ -43,19 +49,19 @@ export class Boot extends TenebrisScene {
     this.player.bindCamera(this.cameras.main);
 
     // placeholder platform
-    const platform = this.physics.add.staticGroup().setOrigin(0, 0);
-    platform
-      .create(
-        0,
-        this.player.body.y + this.player.body.height,
-        PLAYER.SPRITE.BODY.name,
-        0,
-        false,
-      )
-      .refreshBody()
-      .setSize(4000, 1);
+    // const platform = this.physics.add.staticGroup().setOrigin(0, 0);
+    // platform
+    //   .create(
+    //     0,
+    //     this.player.body.y + this.player.body.height,
+    //     PLAYER.SPRITE.BODY.name,
+    //     0,
+    //     false,
+    //   )
+    //   .refreshBody()
+    //   .setSize(4000, 1);
 
-    this.player.collide(platform);
+    this.player.collide(platform!);
 
     // this.input?.once("pointerdown", () => {
     //   fadeCameraToScene(CONSTANTS.SCENES.TEXT_SCENE, this.cameras.main, 1000, {
