@@ -61,7 +61,10 @@ export class Boot extends TenebrisScene {
     //   .refreshBody()
     //   .setSize(4000, 1);
 
-    this.player.collide(platform!);
+    this.physics.add.collider(this.player.body, platform!);
+    this.physics.add.collider(this.player.glow, platform!);
+    platform!.setCollisionBetween(0, 1000);
+    platform!.setCollisionByProperty({ collides: true });
 
     // this.input?.once("pointerdown", () => {
     //   fadeCameraToScene(CONSTANTS.SCENES.TEXT_SCENE, this.cameras.main, 1000, {

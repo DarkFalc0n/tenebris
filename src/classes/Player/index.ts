@@ -25,7 +25,7 @@ export class Player {
   }
 
   bindCamera(camera: Cameras.Scene2D.Camera) {
-    camera.startFollow(this.body, true, 0.6, 0, -350, 0);
+    camera.startFollow(this.body, true, 0.6, 0, -80, 0);
   }
 
   collide(object: Types.Physics.Arcade.ArcadeColliderType) {
