@@ -21,6 +21,7 @@ export class Boot extends TenebrisScene {
     this.loadAudio(CONSTANTS.BGM);
     this.loadSprites(PLAYER.SPRITE);
     this.loadAudioSprites(PLAYER.AUDIO);
+    this.load.tilemapTiledJSON("map", "map.json");
   }
 
   create() {
@@ -28,6 +29,12 @@ export class Boot extends TenebrisScene {
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_1, 0.1, -30);
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_2, 0.4);
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_3, 1, 30);
+
+    // this.add.image(0, 300, CONSTANTS.IMAGES.TILES);
+    // const map = this.make.tilemap({ key: "map" });
+    // const tileset = map.addTilesetImage("tiles", CONSTANTS.IMAGES.TILES);
+
+    // map.createLayer("Background", tileset!);
 
     this.bgm = this.sound.add(CONSTANTS.BGM.BGM_01, { loop: true, volume: 0 });
     this.bgm.play();
@@ -73,17 +80,21 @@ export class Boot extends TenebrisScene {
     super.update();
     this.player.update();
     this.moveImages();
-    if (Math.round(this.player.body.x) === 400) {
-      this.player.stopMovement();
-      this.showSubtitle(
-        "A torn city, a broken heart, a lost soul.",
-        () => {
-          this.showSubtitle("Press SPACE to jump", () => {
-            this.player.startMovement();
-          });
-        },
-        3000,
-      );
-    }
+    // if (Math.round(this.player.body.x) === 400) {
+    //   this.player.stopMovement();
+    //   this.showSubtitle(
+    //     "A torn city, a broken heart, a lost soul.",
+    //     () => {
+    //       this.showSubtitle(
+    //         "Press SPACE to jump",
+    //         () => {
+    //           this.player.startMovement();
+    //         },
+    //         1000,
+    //       );
+    //     },
+    //     3000,
+    //   );
+    // }
   }
 }
