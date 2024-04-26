@@ -28,48 +28,39 @@ export class Boot extends TenebrisScene {
     // this.add.image(512, 384, CONSTANTS.IMAGES.BACKGROUND);
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_1, 0.1, -30);
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_2, 0.4);
-    this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_3, 1, 30);
 
     // this.add.image(0, 300, CONSTANTS.IMAGES.TILES);
-    // const map = this.make.tilemap({ key: "map" });
-    // const tileset = map.addTilesetImage("tiles", CONSTANTS.IMAGES.TILES);
+    const map = this.make.tilemap({ key: "map" });
+    const tileset = map.addTilesetImage(CONSTANTS.IMAGES.TILES);
 
-    // map.createLayer("Background", tileset!);
+    map.createLayer("Background", tileset!)?.setScale(2.2);
+    map.createLayer("BackgroundDecor", tileset!)?.setScale(2.2);
+    map.createLayer("BackgroundDecor2", tileset!)?.setScale(2.2);
+
+    const platform = map
+      .createLayer("Platform", tileset!)!
+      .setScale(2.2)
+      .setCollisionByExclusion([-1], true);
 
     this.bgm = this.sound.add(CONSTANTS.BGM.BGM_01, { loop: true, volume: 0 });
     this.bgm.play();
 
     this.player = new Player(this);
     this.player.bindCamera(this.cameras.main);
-
-    // placeholder platform
-    const platform = this.physics.add.staticGroup().setOrigin(0, 0);
-    platform
-      .create(
-        0,
-        this.player.body.y + this.player.body.height,
-        PLAYER.SPRITE.BODY.name,
-        0,
-        false,
-      )
-      .refreshBody()
-      .setSize(4000, 1);
-
-    this.player.collide(platform);
-
-    // this.input?.once("pointerdown", () => {
-    //   fadeCameraToScene(CONSTANTS.SCENES.TEXT_SCENE, this.cameras.main, 1000, {
-    //     text: "Hello World",
-    //     timeOut: 3000,
-    //     nextScene: "Game",
-    //   });
-    // });
+    this.player.collide(platform!);
 
     this.cameras.main.setBackgroundColor("#adbec7");
+    this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_3, 1, 30);
   }
 
   init() {
     super.init();
+  }
+
+  restart() {
+    this.player.stopMovement();
+    this.cameras.main.fadeOut(1000, 0, 0, 0);
+    this.scene.restart();
   }
 
   update() {
@@ -80,21 +71,8 @@ export class Boot extends TenebrisScene {
     super.update();
     this.player.update();
     this.moveImages();
-    // if (Math.round(this.player.body.x) === 400) {
-    //   this.player.stopMovement();
-    //   this.showSubtitle(
-    //     "A torn city, a broken heart, a lost soul.",
-    //     () => {
-    //       this.showSubtitle(
-    //         "Press SPACE to jump",
-    //         () => {
-    //           this.player.startMovement();
-    //         },
-    //         1000,
-    //       );
-    //     },
-    //     3000,
-    //   );
-    // }
+    if (this.player.body.y > 1000) {
+      this.restart();
+    }
   }
 }
