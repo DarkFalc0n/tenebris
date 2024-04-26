@@ -6,7 +6,6 @@ esbuildServe(
     logLevel: "info",
     entryPoints: ["src/main.ts"],
     bundle: true,
-    minify: true,
     outfile: "public/bundle.min.js",
     plugins: [inlineImage()],
     define: { isDev: "true" },
