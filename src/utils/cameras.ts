@@ -6,7 +6,9 @@ export const fadeCameraToScene = (
 ) => {
   camera.fadeOut(duration / 2, 0, 0, 0, (_: unknown, progress: number) => {
     if (progress === 1) {
-      camera.scene.scene.start(nextScene, nextSceneData);
+      if (camera.scene.scene.key !== nextScene)
+        camera.scene.scene.start(nextScene, nextSceneData);
+      else camera.scene.scene.restart(nextSceneData);
     }
   });
 };

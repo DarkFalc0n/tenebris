@@ -4,6 +4,7 @@ import { Player } from "@/classes/Player";
 import { CONSTANTS } from "@/constants";
 import { PLAYER } from "@/constants/player";
 import { SFX } from "@/types";
+import { fadeCameraToScene } from "@/utils/cameras";
 
 export class Boot extends TenebrisScene {
   private player: Player;
@@ -25,6 +26,7 @@ export class Boot extends TenebrisScene {
   }
 
   create() {
+    super.create();
     // this.add.image(512, 384, CONSTANTS.IMAGES.BACKGROUND);
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_1, 0.1, -30);
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_2, 0.4);
@@ -59,8 +61,7 @@ export class Boot extends TenebrisScene {
 
   restart() {
     this.player.stopMovement();
-    this.cameras.main.fadeOut(1000, 0, 0, 0);
-    this.scene.restart();
+    fadeCameraToScene(CONSTANTS.SCENES.BOOT, this.cameras.main, 1000);
   }
 
   update() {
@@ -72,6 +73,7 @@ export class Boot extends TenebrisScene {
     this.player.update();
     this.moveImages();
     if (this.player.body.y > 1000) {
+      this.player.body.y = 900;
       this.restart();
     }
   }

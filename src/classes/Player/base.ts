@@ -55,6 +55,8 @@ export class PlayerBase extends Physics.Arcade.Sprite {
   stopMovement() {
     this.stopWalking();
     this.canMove = false;
+    this.setVelocity(0);
+    this.setGravityY(0);
   }
 
   protected stopWalking() {
