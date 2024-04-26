@@ -3,7 +3,7 @@ import { getAudioPath, getImagePath } from "@/utils";
 import { Action, ISceneData, TAudioSpriteFile, TSpriteFile } from "@/types";
 
 const defaultSceneData: ISceneData = {
-  fadeTime: 1000,
+  fadeTime: 2000,
   showFps: true,
 };
 

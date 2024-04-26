@@ -53,6 +53,28 @@ export class Boot extends TenebrisScene {
 
     this.cameras.main.setBackgroundColor("#adbec7");
     this.spanFullScreen(CONSTANTS.IMAGES.CITY_ROOF_3, 1, 30);
+
+    //particle emitter
+    this.add.particles(0, 0, "particle", {
+      x: 0,
+      y: 0,
+      emitZone: {
+        source: new Phaser.Geom.Rectangle(-1024, 0, 1024 * 3, 50),
+        type: "random",
+        quantity: 70,
+      },
+      speedX: { min: 0, max: 100 },
+      speedY: { min: 0, max: 100 },
+      accelerationY: { random: [10, 15] },
+      lifespan: 5000,
+      scale: { random: [1.5, 2] },
+      alpha: { random: [0.1, 0.7] },
+      gravityY: 10,
+      frequency: 50,
+      blendMode: "MULTIPLY",
+      follow: this.player.body,
+      followOffset: { x: 0, y: -512 },
+    });
   }
 
   init() {

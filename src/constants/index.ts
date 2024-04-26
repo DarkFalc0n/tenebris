@@ -15,6 +15,7 @@ enum IMAGES {
   CITY_ROOF_2 = "cityroof1",
   CITY_ROOF_3 = "cityroof2",
   TILES = "assetspritesheet",
+  PARTICLE = "particle",
 }
 
 const CONFIG = {
